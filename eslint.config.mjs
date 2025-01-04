@@ -15,6 +15,7 @@ const eslintConfig = [
     rules: {
       // Add the rules you want to disable here
       "next/typescript": "off",
+      "react/no-unescaped-entities": "off",
     },
   },
 ];
