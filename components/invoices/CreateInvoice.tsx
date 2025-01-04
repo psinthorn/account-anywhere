@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 
 const CreateInvoice = () => {
   return (
-    <Card>
+    <Card className='w-full max-w-4xl mx-auto'>
       <CardHeader>
         <CardTitle>
           Invoice
@@ -12,7 +12,7 @@ const CreateInvoice = () => {
           Create invoice
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className='p-6'>
         
       </CardContent>
     </Card>
