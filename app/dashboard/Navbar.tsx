@@ -32,10 +32,10 @@ const Navbar = () => {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link href='/dashbaord'>Dashboard</Link>
+                  <Link href='/dashboard'>Dashboard</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href='/dashbaord/invoices'>Invoices</Link>
+                  <Link href='/dashboard/invoices'>Invoices</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>

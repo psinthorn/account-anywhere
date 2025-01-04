@@ -1,8 +1,9 @@
+import CardFullWidth from '@/components/dashbaord/CardFullWidth'
 import React from 'react'
 
 const Quotations = () => {
   return (
-    <div>Quotations</div>
+    <CardFullWidth title='Quotations' description='Manage your quotations' buttonName="Create Quotation" link="/dashboard/quotations/create" />
   )
 }
 

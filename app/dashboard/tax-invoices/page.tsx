@@ -1,8 +1,9 @@
+import CardFullWidth from '@/components/dashbaord/CardFullWidth'
 import React from 'react'
 
 const TaxInvoices = () => {
   return (
-    <div>Tax Invoices</div>
+    <CardFullWidth title='Tax Invoices' description='Manage your tax invoices' buttonName="Create Tax Invoice" link="/dashboard/tax-invoices/create" />
   )
 }
 

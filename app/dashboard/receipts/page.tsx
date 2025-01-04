@@ -1,8 +1,9 @@
+import CardFullWidth from '@/components/dashbaord/CardFullWidth'
 import React from 'react'
 
 const Receipts = () => {
   return (
-    <div>Receipts</div>
+    <CardFullWidth title='Receipts' description='Manage your receipts' buttonName="Create Receipt" link="/dashboard/receipts/create" />
   )
 }
 
