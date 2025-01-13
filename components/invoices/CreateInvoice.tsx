@@ -10,9 +10,12 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Button } from '../ui/button'
 import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '../ui/calendar'
+import { Textarea } from '../ui/textarea'
+import SubmitButton from '../form/SubmitButton'
 
 const CreateInvoice = () => {
   const [selectedDate, setSelectedDate] = useState(new Date())
+  
   return (
     <Card className='w-full max-w-4xl mx-auto'>
       <CardHeader>
@@ -110,11 +113,48 @@ const CreateInvoice = () => {
                 <SelectItem value='60'>60 days</SelectItem>
                 <SelectItem value='90'>90 days</SelectItem>
               </SelectContent>
-            </Select>
-            
+            </Select>         
           </div>
-
         </div>
+        <div className="grid grid-cols-12 gap-4 mb-2 mt-8">
+          <p className="col-span-2">Model</p>
+          <p className="col-span-4">Descriptions</p>
+          <p className="col-span-2">Quantity</p>
+          <p className="col-span-2">Rate</p>
+          <p className="col-span-2">Total</p>
+        </div>
+        <div className="grid grid-cols-12 gap-4 mb-4">
+          <p className="col-span-2"><Input type="number" placeholder='0' className='text-right' /></p>
+          <p className="col-span-4"><Textarea /></p>
+          <p className="col-span-2"><Input type="number" placeholder='0' className='text-right' /></p>
+          <p className="col-span-2"><Input type="number" placeholder='0' className='text-right' /></p>
+          <p className="col-span-2"><Input type="number" placeholder='0' className='text-right' disabled /></p>
+        </div>
+        <div className="flex justify-end">
+          <div className="w-1/3">
+            <div className="flex justify-between py-4">
+              <span>Subtotal</span>
+              <span>$88.88</span>
+            </div>
+            <div className="flex justify-between py-2 border-t">
+              <span>Vat 7%</span>
+              <span className='font-medium underline underline-offset-2'>0.7</span>
+            </div>
+            <div className="flex justify-between py-2 border-t">
+              <span>Total (USD)</span>
+              <span className='font-medium underline underline-offset-2'>8.88</span>
+            </div>
+          </div>
+        </div>
+          <div>
+            <Label>Note</Label>
+            <Textarea placeholder='Add your note here...'/>
+          </div>
+          <div className="flex items-center justify-end mt-6">
+            <div>
+              <SubmitButton text="Send Invoice to Client" />
+            </div>
+          </div>
       </CardContent>
     </Card>
   )
