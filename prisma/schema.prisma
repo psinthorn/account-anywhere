@@ -23,17 +23,21 @@ datasource db {
 // }
 
 model User {
-  id            String          @id @default(cuid())
-  firstName     String?
-  lastName      String?
-  address       String?
-  email         String          @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+  id                 String            @id @default(cuid())
+  firstName          String?
+  lastName           String?
+  address            String?
+  email              String            @unique
+  emailVerified      DateTime?
+  image              String?
+  accounts           Account[]
+  sessions           Session[]
   // Optional for WebAuthn support
-  Authenticator Authenticator[]
+  Authenticator      Authenticator[]
+  invoices           Invoice[]
+  taxInvoiceReceipts TaxInvoiceReipt[]
+  vouchers           Voucher[]
+  organizations      Organization[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -92,4 +96,328 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
+}
+
+model PurchasingRequest {
+  id            String                 @id @default(uuid())
+  number        String
+  userId        String
+  clientId      String // buyer
+  vendorId      String // suplier
+  requestId     String // user can request by note or email 
+  total         Int
+  date          DateTime
+  validDate     DateTime
+  fromName      String // suplier
+  fromEmail     String
+  fromAddress   String
+  clientName    String // buyer
+  clientEmail   String
+  clientAddress String
+  note          String?
+  status        PurchasingReqestStatus
+
+  items Item[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PurchasingOrder {
+  id                  String                @id @default(uuid())
+  number              String
+  userId              String
+  clientId            String // buyer
+  purchasingRequestId String
+  vendorId            String // suplier
+  requestId           String
+  total               Int
+  date                DateTime
+  validDate           DateTime
+  fromName            String // suplier
+  fromEmail           String
+  fromAddress         String
+  clientName          String // buyer
+  clientEmail         String
+  clientAddress       String
+  note                String?
+  status              PurchasingOrderStatus
+
+  items Item[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Quotation {
+  id                String          @id @default(uuid())
+  number            String
+  userId            String
+  clientId          String // buyer
+  vendorId          String // suplier
+  purchasingOrderId String
+  total             Int
+  date              DateTime
+  validDate         DateTime
+  fromName          String // suplier
+  fromEmail         String
+  fromAddress       String
+  clientName        String // buyer
+  clientEmail       String
+  clientAddress     String
+  note              String?
+  status            QuotationStatus
+
+  items Item[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Invoice {
+  id            String        @id @default(uuid())
+  title         String
+  number        String
+  clientId      String // buyer
+  vendorId      String // suplier
+  quotationId   String
+  subTotal      Int
+  total         Int
+  currency      String
+  date          DateTime
+  dueDate       DateTime
+  fromName      String // suplier
+  fromEmail     String
+  fromAddress   String
+  clientName    String // buyer
+  clientEmail   String
+  clientAddress String
+  note          String?
+  status        InvoiceStatus
+
+  itemId          String
+  itemModel       String
+  itemName        String
+  itemDescription String
+  itemQuatity     Int
+  itemRate        Int
+
+  // items Item[]
+
+  crcreatedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+  Item   Item[]
+}
+
+model Receipt {
+  id            String        @id @default(uuid())
+  number        String
+  userId        String
+  clientId      String // buyer
+  vendorId      String // suplier
+  invoiceId     String
+  receiptNumber String
+  total         Int
+  date          DateTime
+  dueDate       DateTime
+  fromName      String // suplier
+  fromEmail     String
+  fromAddress   String
+  clientName    String // buyer
+  clientEmail   String
+  clientAddress String
+  note          String?
+  status        ReceiptStatus
+
+  itemId          String
+  itemModel       String
+  itemName        String
+  itemDescription String
+  itemQuatity     Int
+  itemRate        Int
+
+  // items Item[]
+
+  crcreatedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Item        Item[]
+}
+
+model Voucher {
+  id            String        @id @default(uuid())
+  number        String
+  clientId      String // buyer
+  vendorId      String // suplier
+  invoiceId     String
+  receiptNumber String
+  total         Int
+  date          DateTime
+  person        Int
+  adult         Int
+  child         Int
+  pickUpPoint   String
+  dropOffPoint  String
+  fromEmail     String
+  fromAddress   String
+  clientName    String // buyer
+  clientEmail   String
+  clientAddress String
+  note          String?
+  status        VoucherStatus
+
+  Items Item[]
+  // itemId          String
+  // itemModel       String
+  // itemName        String
+  // itemDescription String
+  // itemQuatity     Int
+  // itemRate        Int
+
+  crcreatedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+}
+
+model TaxInvoiceReipt {
+  id              String           @id @default(uuid())
+  number          String
+  clientId        String // buyer
+  vendorId        String // suplier
+  invoiceId       String
+  receiptNumber   String
+  total           Int
+  date            DateTime
+  dueDate         DateTime
+  fromName        String // suplier
+  fromEmail       String
+  fromAddress     String
+  clientName      String // buyer
+  clientEmail     String
+  clientAddress   String
+  note            String?
+  status          TaxInvoiceStatus
+  itemName        String
+  itemDescription String
+  itemRate        Int
+  itemQuantity    Int
+
+  items Item[]
+
+  crcreatedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+}
+
+model Item {
+  id          String   @id @default(uuid())
+  number      String
+  model       String
+  category    String
+  name        String
+  description String?
+  quantity    Int
+  rate        Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  PurchasingRequest   PurchasingRequest? @relation(fields: [purchasingRequestId], references: [id])
+  purchasingRequestId String?
+  PurchasingOrder     PurchasingOrder?   @relation(fields: [purchasingOrderId], references: [id])
+  purchasingOrderId   String?
+  Quotation           Quotation?         @relation(fields: [quotationId], references: [id])
+  quotationId         String?
+  Invoice             Invoice?           @relation(fields: [invoiceId], references: [id])
+  invoiceId           String?
+  Receipt             Receipt?           @relation(fields: [receiptId], references: [id])
+  receiptId           String?
+  Voucher             Voucher?           @relation(fields: [voucherId], references: [id])
+  voucherId           String?
+  TaxInvoiceReipt     TaxInvoiceReipt?   @relation(fields: [taxInvoiceReiptId], references: [id])
+  taxInvoiceReiptId   String?
+}
+
+model Address {
+  id           String         @id @default(uuid())
+  street       String
+  subDistrict  String
+  district     String
+  province     String
+  postalCode   String
+  country      String         @default("Thailand")
+  latitude     Float?
+  longitude    Float?
+  placeId      String? // Google Place ID
+  Organization Organization[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model Organization {
+  id        String   @id @default(uuid())
+  shortName String
+  name      String
+  email     String
+  phone     String
+  address   Address  @relation(fields: [addressId], references: [id])
+  addressId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+}
+
+enum PurchasingReqestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum PurchasingOrderStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum QuotationStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+enum InvoiceStatus {
+  PENDING
+  OVERDUE
+  PAID
+  CANCELLED
+  CANTCOLLECT
+}
+
+enum ReceiptStatus {
+  PENDING
+  PAID
+  SENT
+  CANCELLED
+}
+
+enum VoucherStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum TaxInvoiceStatus {
+  SENT
+  CANCELLED
 }

@@ -1,9 +1,9 @@
-import CreateInvoice from '@/components/invoices/CreateInvoice'
-import React from 'react'
+import CreateInvoiceForm from "@/components/invoices/CreateInvoiceForm"
+
 
 const CreateInvoicePage = () => {
   return (
-    <CreateInvoice/>
+    <CreateInvoiceForm />
   )
 }
 
