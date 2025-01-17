@@ -176,12 +176,14 @@ model Quotation {
 
 model Invoice {
   id            String        @id @default(uuid())
+  title         String
   number        String
   clientId      String // buyer
   vendorId      String // suplier
   quotationId   String
   subTotal      Int
   total         Int
+  currency      String
   date          DateTime
   dueDate       DateTime
   fromName      String // suplier
@@ -193,13 +195,21 @@ model Invoice {
   note          String?
   status        InvoiceStatus
 
-  items Item[]
+  itemId          String
+  itemModel       String
+  itemName        String
+  itemDescription String
+  itemQuatity     Int
+  itemRate        Int
+
+  // items Item[]
 
   crcreatedAt DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   User   User?   @relation(fields: [userId], references: [id])
   userId String?
+  Item   Item[]
 }
 
 model Receipt {
@@ -222,10 +232,18 @@ model Receipt {
   note          String?
   status        ReceiptStatus
 
-  items Item[]
+  itemId          String
+  itemModel       String
+  itemName        String
+  itemDescription String
+  itemQuatity     Int
+  itemRate        Int
+
+  // items Item[]
 
   crcreatedAt DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  Item        Item[]
 }
 
 model Voucher {

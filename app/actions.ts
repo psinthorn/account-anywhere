@@ -35,7 +35,8 @@ export const OnboardUser =  async (prevState: any ,formDara: FormData) => {
   return redirect("/dashboard")
 }
 
-const CreateInvoce = async  (formData: FormData) => {
+
+export const CreateInvoce = async  (prevState: any ,formData: FormData) => {
   const session = requireAuth()
 
   const submission = parseWithZod(formData, {
@@ -62,9 +63,10 @@ const CreateInvoce = async  (formData: FormData) => {
       clientId: submission.value.clientId, // Add this field
       vendorId: submission.value.vendorId, // Add this field
       quotationId: submission.value.quotationId, // Add this field
-      // subTotal: submission.value.subTotal,
       total: submission.value.total, // Add this field
     }
   });
+
+  return redirect("/invoices")
 
 }
