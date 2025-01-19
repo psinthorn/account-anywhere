@@ -28,6 +28,7 @@ const CreateInvoiceForm = () => {
   const [currencyCode, setCurrencyCode] = useState("THB")
   const [tax, setTax] = useState("0")
   const [discount, setDiscount] = useState("0")
+  const [dueDate, setDueDate] = useState("cash")
 
   const [lastResult, actionForm] = useActionState(CreateInvoice, undefined)
 
@@ -91,6 +92,7 @@ const CreateInvoiceForm = () => {
           >
 
           <input type="hidden" name={fields.date.name} key={fields.date.key} value={selectedDate.toISOString()} />
+          {/* <input type="hidden" name={fields.dueDate.name} key={fields.dueDate.key} value={dueDate} /> */}
           <input type="hidden" name={fields.itemTotal.name} key={fields.itemTotal.key} value={itemTotal}  />
 
           <div className="flex flex-col gap-1 w-fit mb-6">
@@ -230,7 +232,9 @@ const CreateInvoiceForm = () => {
               <Select
                 name={fields.dueDate.name}
                 key={fields.dueDate.key}
-                defaultValue={fields.dueDate.initialValue}
+                onValueChange={(value) => setDueDate(value)}
+                value={dueDate}
+                defaultValue="cash"
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select Due Date" />
