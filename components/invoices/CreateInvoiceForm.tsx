@@ -12,7 +12,7 @@ import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '../ui/calendar'
 import { Textarea } from '../ui/textarea'
 import SubmitButton from '../form/SubmitButton'
-import { CreateInvoce } from '@/app/actions'
+import { CreateInvoice } from '@/app/actions'
 import { parseWithZod } from '@conform-to/zod'
 import { useForm } from '@conform-to/react'
 import { invoiceSchema } from '@/app/utils/zodSchemas'
@@ -20,13 +20,16 @@ import { formatCurrency } from '@/app/utils/formatCurrency'
 
 const CreateInvoiceForm = () => {
 
-  const [lastResult, action] = useActionState(CreateInvoce, undefined)
   const [selectedDate, setSelectedDate] = useState(new Date())
-  const [rate, setRate] = useState("")
-  const [quantity, setQuantity] = useState("")
-  const [subTotal, setSubTotal] = useState("")
+  const [rate, setRate] = useState("0")
+  const [quantity, setQuantity] = useState("0")
+  const [subTotal, setSubTotal] = useState("0")
+  const [itemTotal, setItemTotal] = useState("0")
   const [currencyCode, setCurrencyCode] = useState("THB")
-  const [tax, setTax] = useState(0)
+  const [tax, setTax] = useState("0")
+  const [discount, setDiscount] = useState("0")
+
+  const [lastResult, actionForm] = useActionState(CreateInvoice, undefined)
 
   const [form, fields] = useForm({
       lastResult,
@@ -46,28 +49,27 @@ const CreateInvoiceForm = () => {
       console.log(currencyCode);
     }
 
-  
     // calculate subtotal when rate or quantity value is change
     const CalculateSubTotal = async () => {
-      const result = (parseInt(rate) || 0) * (parseInt(quantity) || 0);
+      const result = (parseFloat(rate) || 0 * parseFloat(quantity) || 0);
       return result;
     };
 
-    const TaxCalculate = async () => {
-      const subTotal = await CalculateSubTotal()
-      return setTax(subTotal*7/100)
-    }
-  
     useEffect(() => {
       const updateSubTotal = async () => {
         const result = await CalculateSubTotal();
         setSubTotal(result.toString());
       };
-  
       updateSubTotal();
 
+      // const updateTotal = async () => {
+      //   const updateItemTotal = await CalculateSubTotal()
+      //   setItemTotal(updateItemTotal)
+      //   console.log(itemTotal)
+      // }  
+      // updateTotal()
+     
     }, [rate, quantity, currencyCode]);
-
 
 
   return (
@@ -82,13 +84,14 @@ const CreateInvoiceForm = () => {
       </CardHeader>
       <CardContent className='p-6'>
         <form 
-          action={action} 
+          action={actionForm} 
           id={form.id}
           onSubmit={form.onSubmit}
           noValidate
           >
 
           <input type="hidden" name={fields.date.name} key={fields.date.key} value={selectedDate.toISOString()} />
+          <input type="hidden" name={fields.itemTotal.name} key={fields.itemTotal.key} value={itemTotal}  />
 
           <div className="flex flex-col gap-1 w-fit mb-6">
             <div className="flex items-center gap-4">
@@ -110,16 +113,16 @@ const CreateInvoiceForm = () => {
               <div className="flex">
                 <span className="flex items-center px-3 rounded-l-md border border-r-0 bg-muted">#</span>
                 <Input 
-                  name={fields.number.name}
-                  key={fields.number.key}
-                  defaultValue={fields.number.initialValue}
+                  name={fields.invoiceNumber.name}
+                  key={fields.invoiceNumber.key}
+                  defaultValue={fields.invoiceNumber.initialValue}
                   type='text' 
-                  placeholder='INV11120008' 
+                  placeholder='INV-111223-008' 
                   className='rounded-l-none' 
                 />
                
               </div>
-              <p className="text-sm text-red-500">{fields.number.errors}</p>
+              <p className="text-sm text-red-500">{fields.invoiceNumber.errors}</p>
             </div>   
 
             <div>
@@ -130,7 +133,6 @@ const CreateInvoiceForm = () => {
                 defaultValue={currencyCode}
                 value={currencyCode}
                 onValueChange={(value) => handleCurrencyChange(value)}
-               
               >
                 <SelectTrigger>
                   <SelectValue 
@@ -226,9 +228,9 @@ const CreateInvoiceForm = () => {
                 <Label>Due Date</Label>
               </div>
               <Select
-              name={fields.dueDate.name}
-              key={fields.dueDate.key}
-              defaultValue={fields.dueDate.initialValue}
+                name={fields.dueDate.name}
+                key={fields.dueDate.key}
+                defaultValue={fields.dueDate.initialValue}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select Due Date" />
@@ -262,51 +264,59 @@ const CreateInvoiceForm = () => {
                 placeholder='MOD-123X321-1' 
                 className='text-right' 
                 />
-                <p className="text-sm text-red-500">{fields.itemId.errors}</p>
+                <span className="text-sm text-red-500">{fields.itemId.errors}</span>
             </p>
             <p className="col-span-4">
               <Textarea
                 name={fields.itemDescription.name}
                 key={fields.itemDescription.key}
                 placeholder='Add your item description here...' />
-                <p className="text-sm text-red-500">{fields.itemDescription.errors}</p>
+                <span className="text-sm text-red-500">{fields.itemDescription.errors}</span>
             </p>
             <p className="col-span-2">
               <Input 
                 name={fields.itemQuatity.name}
                 key={fields.itemQuatity.key}
-                type="text" 
+                type="number" 
                 placeholder='0' 
                 className='text-right' 
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
+                // onChange={(e) => (setQuantity(parseInt(e.target.value)), console.log("Quantity: ", quantity))}
               />
-              <p className="text-sm text-red-500">{fields.itemQuatity.errors}</p>
+              <span className="text-sm text-red-500">{fields.itemQuatity.errors}</span>
             </p>
             <p className="col-span-2">
               <Input 
                 name={fields.itemRate.name}
                 key={fields.itemRate.key}
-                type="text" 
-                placeholder='0' 
+                type="number" 
+                placeholder="0"
                 className='text-right' 
                 value={rate}
                 onChange={(e) => setRate(e.target.value)}
+                // onChange={(e) => (setRate(parseInt(e.target.value)), console.log("Rate: ", rate))}
               />
-                <p className="text-sm text-red-500">{fields.itemRate.errors}</p>
+                <span className="text-sm text-red-500">{fields.itemRate.errors}</span>
             </p>
             <p className="col-span-2">
-              <Input 
-                name={fields.itemTotal.name}
-                key={fields.itemTotal.key}               
-                type="number" 
+              <Input              
+                type="text" 
                 placeholder='0' 
-                value={parseInt(subTotal).toFixed(2)}
-                className='text-right' disabled 
+                value={formatCurrency(parseInt(subTotal), currencyCode)}
+                className='text-right' 
+                disabled 
+                // defaultValue={0}
               />
-              <p className="text-sm text-red-500">{fields.itemTotal.errors}</p>
+              <span className="text-sm text-red-500">{fields.itemTotal.errors}</span>
             </p>
           </div>
+          <hr className='my-8'/>
+          <div className="flex justify-start">
+            <div className="w-full py-4">
+              Term & Condition
+            </div>
+          </div> 
           <div className="flex justify-end">
             <div className="w-1/3">
               <div className="flex justify-between py-4">
@@ -314,18 +324,31 @@ const CreateInvoiceForm = () => {
                 <span>{formatCurrency(parseInt(subTotal), currencyCode)}</span>
               </div>
               <div className="flex justify-between py-2 border-t">
-                <span>Vat 7%</span>
-                <span className='font-medium'>{formatCurrency(tax,currencyCode)}</span>
+                <span>Discont</span>
+                <span>{formatCurrency(parseInt(subTotal) , currencyCode)}</span>
               </div>
               <div className="flex justify-between py-2 border-t">
-                <span>Total ({currencyCode})</span>
-                <span className='font-medium underline underline-offset-2'>{formatCurrency((parseInt(subTotal)+tax), currencyCode)}</span>
+                <span>Total</span>
+                <span>{formatCurrency(parseInt(subTotal), currencyCode)}</span>
+              </div>
+              <div className="flex justify-between py-2 border-t">
+                <span>Vat 7%</span>
+                <span className='font-medium'>{formatCurrency(parseInt(tax),currencyCode)}</span>
+              </div>
+              <div className="flex justify-between py-2 border-t">
+                <span>Grand Total ({currencyCode})</span>
+                <span className='font-medium underline underline-offset-2'>{formatCurrency(parseInt(subTotal)+parseInt(tax), currencyCode)}</span>
               </div>
             </div>
           </div>
+
             <div>
               <Label>Note</Label>
-              <Textarea placeholder='Add your note here...'/>
+              <Textarea 
+                name={fields.note.name}
+                key={fields.note.key}
+                placeholder='Add your note here...'
+              />
             </div>
             <div className="flex items-center justify-end mt-6">
               <div>
