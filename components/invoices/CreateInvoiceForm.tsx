@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useActionState, useState } from 'react'
+import React, { useActionState, useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
 import { Badge } from '../ui/badge'
 import { Input } from '../ui/input'
@@ -16,11 +16,17 @@ import { CreateInvoce } from '@/app/actions'
 import { parseWithZod } from '@conform-to/zod'
 import { useForm } from '@conform-to/react'
 import { invoiceSchema } from '@/app/utils/zodSchemas'
+import { formatCurrency } from '@/app/utils/formatCurrency'
 
 const CreateInvoiceForm = () => {
 
   const [lastResult, action] = useActionState(CreateInvoce, undefined)
   const [selectedDate, setSelectedDate] = useState(new Date())
+  const [rate, setRate] = useState("")
+  const [quantity, setQuantity] = useState("")
+  const [subTotal, setSubTotal] = useState("")
+  const [currencyCode, setCurrencyCode] = useState("THB")
+  const [tax, setTax] = useState(0)
 
   const [form, fields] = useForm({
       lastResult,
@@ -32,7 +38,37 @@ const CreateInvoiceForm = () => {
       },
         shouldValidate: "onBlur",
         shouldRevalidate: "onInput"
-    })
+    });
+
+    const handleCurrencyChange = (value: string) => {
+      const code = value.toUpperCase();
+      setCurrencyCode(code);
+      console.log(currencyCode);
+    }
+
+  
+    // calculate subtotal when rate or quantity value is change
+    const CalculateSubTotal = async () => {
+      const result = (parseInt(rate) || 0) * (parseInt(quantity) || 0);
+      return result;
+    };
+
+    const TaxCalculate = async () => {
+      const subTotal = await CalculateSubTotal()
+      return setTax(subTotal*7/100)
+    }
+  
+    useEffect(() => {
+      const updateSubTotal = async () => {
+        const result = await CalculateSubTotal();
+        setSubTotal(result.toString());
+      };
+  
+      updateSubTotal();
+
+    }, [rate, quantity, currencyCode]);
+
+
 
   return (
     <Card className='w-full max-w-4xl mx-auto'>
@@ -91,15 +127,20 @@ const CreateInvoiceForm = () => {
               <Select 
                 name={fields.currency.name}
                 key={fields.currency.key}
-                defaultValue='thb'
+                defaultValue={currencyCode}
+                value={currencyCode}
+                onValueChange={(value) => handleCurrencyChange(value)}
+               
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select Currency" />
+                  <SelectValue 
+                    placeholder="Select Currency"
+                   />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='thb'>Thai Baht --THB</SelectItem>
-                  <SelectItem value='usd'>United States Dollar --USD</SelectItem>
-                  <SelectItem value='eur'>Euro --EUR</SelectItem>
+                  <SelectItem value='THB'>Thai Baht --THB</SelectItem>
+                  <SelectItem value='USD'>United States Dollar --USD</SelectItem>
+                  <SelectItem value='EUR'>Euro --EUR</SelectItem>
                 </SelectContent>
               </Select>
               <p className="text-sm text-red-500">{fields.currency.errors}</p>
@@ -217,9 +258,10 @@ const CreateInvoiceForm = () => {
               <Input 
                 name={fields.itemId.name}
                 key={fields.itemId.key}
-                type="number" 
-                placeholder='0' 
-                className='text-right' />
+                type="text" 
+                placeholder='MOD-123X321-1' 
+                className='text-right' 
+                />
                 <p className="text-sm text-red-500">{fields.itemId.errors}</p>
             </p>
             <p className="col-span-4">
@@ -231,20 +273,26 @@ const CreateInvoiceForm = () => {
             </p>
             <p className="col-span-2">
               <Input 
-              name={fields.itemQuatity.name}
-              key={fields.itemQuatity.key}
-              type="number" 
-              placeholder='0' 
-              className='text-right' />
+                name={fields.itemQuatity.name}
+                key={fields.itemQuatity.key}
+                type="text" 
+                placeholder='0' 
+                className='text-right' 
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+              />
               <p className="text-sm text-red-500">{fields.itemQuatity.errors}</p>
             </p>
             <p className="col-span-2">
               <Input 
                 name={fields.itemRate.name}
                 key={fields.itemRate.key}
-                type="number" 
+                type="text" 
                 placeholder='0' 
-                className='text-right' />
+                className='text-right' 
+                value={rate}
+                onChange={(e) => setRate(e.target.value)}
+              />
                 <p className="text-sm text-red-500">{fields.itemRate.errors}</p>
             </p>
             <p className="col-span-2">
@@ -253,6 +301,7 @@ const CreateInvoiceForm = () => {
                 key={fields.itemTotal.key}               
                 type="number" 
                 placeholder='0' 
+                value={parseInt(subTotal).toFixed(2)}
                 className='text-right' disabled 
               />
               <p className="text-sm text-red-500">{fields.itemTotal.errors}</p>
@@ -262,15 +311,15 @@ const CreateInvoiceForm = () => {
             <div className="w-1/3">
               <div className="flex justify-between py-4">
                 <span>Subtotal</span>
-                <span>$88.88</span>
+                <span>{formatCurrency(parseInt(subTotal), currencyCode)}</span>
               </div>
               <div className="flex justify-between py-2 border-t">
                 <span>Vat 7%</span>
-                <span className='font-medium underline underline-offset-2'>0.7</span>
+                <span className='font-medium underline underline-offset-2'>{formatCurrency(tax,currencyCode)}</span>
               </div>
               <div className="flex justify-between py-2 border-t">
-                <span>Total (USD)</span>
-                <span className='font-medium underline underline-offset-2'>8.88</span>
+                <span>Total ({currencyCode})</span>
+                <span className='font-medium underline underline-offset-2'>{formatCurrency((parseInt(subTotal)+tax), currencyCode)}</span>
               </div>
             </div>
           </div>
