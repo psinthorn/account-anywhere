@@ -150,42 +150,18 @@ model PurchasingOrder {
 }
 
 model Quotation {
-  id                String          @id @default(uuid())
-  number            String
+  id            String @id @default(uuid())
+  invoiceNumber String
+
   userId            String
   clientId          String // buyer
   vendorId          String // suplier
   purchasingOrderId String
-  total             Int
-  date              DateTime
-  validDate         DateTime
-  fromName          String // suplier
-  fromEmail         String
-  fromAddress       String
-  clientName        String // buyer
-  clientEmail       String
-  clientAddress     String
-  note              String?
-  status            QuotationStatus
 
-  items Item[]
+  total Int
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Invoice {
-  id            String        @id @default(uuid())
-  title         String
-  number        String
-  clientId      String // buyer
-  vendorId      String // suplier
-  quotationId   String
-  subTotal      Int
-  total         Int
-  currency      String
   date          DateTime
-  dueDate       DateTime
+  validDate     DateTime
   fromName      String // suplier
   fromEmail     String
   fromAddress   String
@@ -193,23 +169,69 @@ model Invoice {
   clientEmail   String
   clientAddress String
   note          String?
-  status        InvoiceStatus
 
-  itemId          String
-  itemModel       String
-  itemName        String
-  itemDescription String
-  itemQuatity     Int
-  itemRate        Int
+  status QuotationStatus
+
+  items Item[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Invoice Model Schema
+model Invoice {
+  id String @id @default(uuid())
+
+  title         String
+  invoiceNumber String   @default("INV-1112230001")
+  date          DateTime
+
+  fromName    String // suplier
+  fromEmail   String
+  fromAddress String
+
+  clientName    String // buyer
+  clientEmail   String
+  clientAddress String
+
+  clientId    String @default("1") // buyer and hidden input
+  vendorId    String @default("1") // suplier
+  quotationId String @default("1") // and hidden input
+  // dueDate     DateTime @default(now()) // and hidden input
+  dueDate     String
+
+  subTotal        Int     @default(0)
+  discountPercent Int     @default(0)
+  discountTotal   Int     @default(0)
+  vatPercent      Int     @default(7)
+  vatTotal        Int     @default(0)
+  note            String?
+
+  itemId          String @default("F2-111223")
+  itemModel       String @default("MOD-111223")
+  itemName        String @default("Account Anywhrer")
+  itemDescription String @default("Accpount made simple from anywhere service")
+  itemQuatity     Int    @default(0)
+  itemRate        Int    @default(0)
+  itemTotal       Int    @default(0)
+
+  total    Int    @default(0)
+  currency String @default("THB")
 
   // items Item[]
+
+  reviseNumber Int      @default(1) //revise number
+  reviseDate   DateTime @default(now()) //revise date 
+  revise       String   @default("11121980-01") //revise date - revise number
+
+  status InvoiceStatus
 
   crcreatedAt DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   User   User?   @relation(fields: [userId], references: [id])
   userId String?
-  Item   Item[]
+  // Item   Item[]
 }
 
 model Receipt {
@@ -238,6 +260,7 @@ model Receipt {
   itemDescription String
   itemQuatity     Int
   itemRate        Int
+  itemTotal       Int
 
   // items Item[]
 
@@ -333,14 +356,16 @@ model Item {
   purchasingOrderId   String?
   Quotation           Quotation?         @relation(fields: [quotationId], references: [id])
   quotationId         String?
-  Invoice             Invoice?           @relation(fields: [invoiceId], references: [id])
-  invoiceId           String?
+  // Invoice             Invoice?           @relation(fields: [invoiceId], references: [id])
+  // invoiceId           String?
   Receipt             Receipt?           @relation(fields: [receiptId], references: [id])
   receiptId           String?
   Voucher             Voucher?           @relation(fields: [voucherId], references: [id])
   voucherId           String?
   TaxInvoiceReipt     TaxInvoiceReipt?   @relation(fields: [taxInvoiceReiptId], references: [id])
   taxInvoiceReiptId   String?
+  // Invoice             Invoice?           @relation(fields: [invoiceId], references: [id])
+  // invoiceId           String?
 }
 
 model Address {
