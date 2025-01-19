@@ -52,7 +52,7 @@ const CreateInvoiceForm = () => {
 
     // calculate subtotal when rate or quantity value is change
     const CalculateSubTotal = async () => {
-      const result = (parseFloat(rate) || 0 * parseFloat(quantity) || 0);
+      const result = ((parseFloat(rate) || 0) * (parseFloat(quantity) || 0));
       return result;
     };
 
@@ -92,7 +92,6 @@ const CreateInvoiceForm = () => {
           >
 
           <input type="hidden" name={fields.date.name} key={fields.date.key} value={selectedDate.toISOString()} />
-          {/* <input type="hidden" name={fields.dueDate.name} key={fields.dueDate.key} value={dueDate} /> */}
           <input type="hidden" name={fields.itemTotal.name} key={fields.itemTotal.key} value={itemTotal}  />
 
           <div className="flex flex-col gap-1 w-fit mb-6">
