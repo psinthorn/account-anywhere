@@ -66,7 +66,7 @@ export const CreateInvoice = async  (prevState: any ,formData: FormData) => {
       // clientId: submission.value.clientId, // Add this field
       // vendorId: submission.value.vendorId, // Add this field
       // quotationId: submission.value.quotationId, // Add this field
-      dueDate: submission.value.dueDate,
+      dueDate: submission.value.dueDate || "",
       
 
       // subTotal: submission.value.subTotal,
