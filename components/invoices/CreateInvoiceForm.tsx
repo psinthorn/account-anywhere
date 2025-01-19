@@ -315,7 +315,7 @@ const CreateInvoiceForm = () => {
               </div>
               <div className="flex justify-between py-2 border-t">
                 <span>Vat 7%</span>
-                <span className='font-medium underline underline-offset-2'>{formatCurrency(tax,currencyCode)}</span>
+                <span className='font-medium'>{formatCurrency(tax,currencyCode)}</span>
               </div>
               <div className="flex justify-between py-2 border-t">
                 <span>Total ({currencyCode})</span>
