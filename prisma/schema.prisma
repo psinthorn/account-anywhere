@@ -198,7 +198,7 @@ model Invoice {
   vendorId    String @default("1") // suplier
   quotationId String @default("1") // and hidden input
   // dueDate     DateTime @default(now()) // and hidden input
-  dueDate     String
+  dueDate     String @default("cash")
 
   subTotal        Int     @default(0)
   discountPercent Int     @default(0)
