@@ -5,16 +5,28 @@ import { PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import { buttonVariants } from '../ui/button'
 import ButtonMainActions from './ButtonMainActions'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table'
+import InvoiceActions from '../invoices/InvoiceActions'
+
+interface InvoiceProps {
+  id: string;
+  invoiceNumber: string;
+  clientName: string;
+  clientEmail: string;
+  itemRate: number;
+  status: string;
+  // createdAt: string;
+}
 
 interface CardFullWidthProps {
   title: string
   description: string  
   buttonName: string
   link: string
+  invoices: InvoiceProps[]
+};
 
-}
-
-const CardFullWidth = ({title, description, buttonName, link}: CardFullWidthProps ) => {
+const CardFullWidth = ({title, description, buttonName, link, invoices}: CardFullWidthProps) => {
   return (
       <Card>
         <CardHeader>
@@ -31,7 +43,36 @@ const CardFullWidth = ({title, description, buttonName, link}: CardFullWidthProp
           </div>
         </CardHeader>
         <CardContent>
-          <InvoicesList/>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  {/* <TableHead>Invoice ID</TableHead> */}
+                  <TableHead>Invoice No.</TableHead>
+                  <TableHead>Custome</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead className='text-right'>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {invoices.map((inv) => (
+                  <TableRow key={inv.id}>
+                     {/* <TableCell>{inv.id}</TableCell> */}
+                    <TableCell>{inv.invoiceNumber}</TableCell>
+                    <TableCell>{inv.clientName}</TableCell>
+                    <TableCell>{inv.clientEmail}</TableCell>
+                    <TableCell>{inv.itemRate}</TableCell>
+                    <TableCell>{inv.status}</TableCell>
+                    <TableCell>11.12.23</TableCell>
+                    <TableCell className='text-right'>
+                      <InvoiceActions />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+          </Table>
         </CardContent>
       </Card>
   )

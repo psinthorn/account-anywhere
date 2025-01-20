@@ -30,12 +30,10 @@ export const OnboardUser =  async (prevState: any ,formDara: FormData) => {
     }
   });
 
-  console.log("Account is updated!")
-
   return redirect("/dashboard")
-}
+};
 
-
+// create new invoice for client or customer
 export const CreateInvoice = async  (prevState: any ,formData: FormData) => {
   const session = requireAuth()
 

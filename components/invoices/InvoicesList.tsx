@@ -1,7 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import InvoiceActions from './InvoiceActions'
 
-const InvoicesList = () => {
+const InvoicesList = ({invoices}: any) => {
   return (
     <Table>
         <TableHeader>
@@ -16,7 +16,7 @@ const InvoicesList = () => {
         </TableHeader>
         <TableBody>
           <TableRow>
-            <TableCell>INV001</TableCell>
+            <TableCell></TableCell>
             <TableCell>Sinthorn Pradutnam</TableCell>
             <TableCell>$888.88</TableCell>
             <TableCell>Paid</TableCell>

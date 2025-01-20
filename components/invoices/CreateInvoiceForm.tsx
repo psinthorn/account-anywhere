@@ -63,13 +63,6 @@ const CreateInvoiceForm = () => {
       };
       updateSubTotal();
 
-      // const updateTotal = async () => {
-      //   const updateItemTotal = await CalculateSubTotal()
-      //   setItemTotal(updateItemTotal)
-      //   console.log(itemTotal)
-      // }  
-      // updateTotal()
-     
     }, [rate, quantity, currencyCode]);
 
 
