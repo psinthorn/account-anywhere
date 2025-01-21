@@ -15,7 +15,7 @@ interface InvoiceProps {
   clientEmail: string;
   itemRate: number;
   status: string;
-  // createdAt: string;
+  createdAt: string;
 }
 
 interface CardFullWidthProps {
@@ -65,7 +65,7 @@ const CardFullWidth = ({title, description, buttonName, link, invoices}: CardFul
                     <TableCell>{inv.clientEmail}</TableCell>
                     <TableCell>{inv.itemRate}</TableCell>
                     <TableCell>{inv.status}</TableCell>
-                    <TableCell>11.12.23</TableCell>
+                    <TableCell></TableCell>
                     <TableCell className='text-right'>
                       <InvoiceActions />
                     </TableCell>
