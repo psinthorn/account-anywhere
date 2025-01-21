@@ -3,7 +3,10 @@ import React from 'react'
 
 const PurchasingRequests = () => {
   return (
-    <CardFullWidth title='Purchasing Requests' description='Manage your purchasing requests' buttonName="Create Purchasing Request" link="/dashboard/purchasing-requests/create" />
+
+    <>Purchasing Request</>
+    // <CardFullWidth title='Purchasing Requests' description='Manage your purchasing requests' buttonName="Create Purchasing Request" link="/dashboard/purchasing-requests/create" />
+  
   )
 }
 
