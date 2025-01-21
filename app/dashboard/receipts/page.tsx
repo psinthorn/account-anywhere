@@ -3,7 +3,8 @@ import React from 'react'
 
 const Receipts = () => {
   return (
-    <CardFullWidth title='Receipts' description='Manage your receipts' buttonName="Create Receipt" link="/dashboard/receipts/create" />
+    <>Receipts</>
+    // <CardFullWidth title='Receipts' description='Manage your receipts' buttonName="Create Receipt" link="/dashboard/receipts/create" />
   )
 }
 
