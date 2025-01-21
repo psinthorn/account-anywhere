@@ -3,7 +3,8 @@ import React from 'react'
 
 const Quotations = () => {
   return (
-    <CardFullWidth title='Quotations' description='Manage your quotations' buttonName="Create Quotation" link="/dashboard/quotations/create" />
+    <>Quotations</>
+    // <CardFullWidth title='Quotations' description='Manage your quotations' buttonName="Create Quotation" link="/dashboard/quotations/create" />
   )
 }
 

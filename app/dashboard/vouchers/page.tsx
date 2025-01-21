@@ -3,7 +3,8 @@ import React from 'react'
 
 const Vouchers = () => {
   return (
-    <CardFullWidth title='Vouchers' description='Manage your vouchers' buttonName="Create Voucher" link="/dashboard/vouchers/create" />
+    <>Vouchers</>
+    // <CardFullWidth title='Vouchers' description='Manage your vouchers' buttonName="Create Voucher" link="/dashboard/vouchers/create" />
   )
 }
 
