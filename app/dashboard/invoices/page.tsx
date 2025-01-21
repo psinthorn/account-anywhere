@@ -9,7 +9,7 @@ import prisma from '@/app/utils/db'
 import { requireAuth } from '@/app/utils/hooks'
 
 
-async function getInvoices(userId: string) {
+const getInvoices = async (userId: string) => {
   const data = await prisma.invoice.findMany({
     where: {
       userId: userId
