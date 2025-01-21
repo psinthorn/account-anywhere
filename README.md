@@ -47,3 +47,23 @@ pnpm dlx prisma db push
 pnpm dlx prisma studio
 
 ```
+
+### Update command
+
+```
+  # Install Prisma and the Prisma Client
+  pnpm add -D prisma
+  pnpm add @prisma/client
+
+  # Initialize Prisma
+  pnpx prisma init
+
+  # Create and apply migrations
+  pnpx prisma migrate dev --name init
+
+  # Generate the Prisma Client
+  pnpx prisma generate
+
+  # Open Prisma Studio to inspect the database
+  pnpx prisma studio
+```

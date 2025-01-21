@@ -10,7 +10,7 @@ import { requireAuth } from '@/app/utils/hooks'
 
 
 export async function getInvoices(userId: string) {
-  const data = prisma.invoice.findMany({
+  const data = await prisma.invoice.findMany({
     where: {
       userId: userId
     },
@@ -21,14 +21,18 @@ export async function getInvoices(userId: string) {
       clientEmail: true,
       itemRate: true,
       status: true,
-      // createdAt: true
+      createdAt: true,
+    
     }, 
     orderBy: {
-      // createdAt: 'desc'
+      createdAt: 'desc'
     }
   });
 
-  return data
+  return data.map(invoice => ({
+    ...invoice,
+    createdAt: invoice.createdAt.toISOString()
+  }))
 };
 
 const Invoices = async () => {
