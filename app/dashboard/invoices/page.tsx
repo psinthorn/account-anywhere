@@ -20,6 +20,7 @@ const getInvoices = async (userId: string) => {
       clientName: true,
       clientEmail: true,
       itemRate: true,
+      currency: true,
       status: true,
       createdAt: true,
     

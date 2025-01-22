@@ -67,3 +67,11 @@ pnpm dlx prisma studio
   # Open Prisma Studio to inspect the database
   pnpx prisma studio
 ```
+
+## How to install Mailtrap
+
+```
+  # Install Mailtrap
+  pnpm install mailtrap
+
+```

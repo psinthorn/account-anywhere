@@ -7,6 +7,9 @@ import { buttonVariants } from '../ui/button'
 import ButtonMainActions from './ButtonMainActions'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table'
 import InvoiceActions from '../invoices/InvoiceActions'
+import { dateFormat, splitDate } from '@/app/utils/dateFormat'
+import { Badge } from '../ui/badge'
+import { formatCurrency } from '@/app/utils/formatCurrency'
 
 interface InvoiceProps {
   id: string;
@@ -14,6 +17,7 @@ interface InvoiceProps {
   clientName: string;
   clientEmail: string;
   itemRate: number;
+  currency: string;
   status: string;
   createdAt: string;
 }
@@ -63,9 +67,9 @@ const CardFullWidth = ({title, description, buttonName, link, invoices}: CardFul
                     <TableCell>{inv.invoiceNumber}</TableCell>
                     <TableCell>{inv.clientName}</TableCell>
                     <TableCell>{inv.clientEmail}</TableCell>
-                    <TableCell>{inv.itemRate}</TableCell>
-                    <TableCell>{inv.status}</TableCell>
-                    <TableCell></TableCell>
+                    <TableCell>{formatCurrency(inv.itemRate, inv.currency)}</TableCell>
+                    <TableCell><Badge>{inv.status}</Badge></TableCell>
+                    <TableCell>{dateFormat(inv.createdAt, "th-TH")} - {splitDate(dateFormat(inv.createdAt, "th-TH"))}</TableCell>
                     <TableCell className='text-right'>
                       <InvoiceActions />
                     </TableCell>
