@@ -5,6 +5,7 @@ import prisma from "./utils/db"
 import { requireAuth } from "./utils/hooks"
 import { invoiceSchema, onboardingSchema } from "./utils/zodSchemas"
 import { parseWithZod } from "@conform-to/zod"
+import { mailClient } from "./utils/mailtrap"
 // import { sub } from "date-fns"
 
 
@@ -90,6 +91,26 @@ export const CreateInvoice = async  (prevState: any ,formData: FormData) => {
       userId: (await session).user?.id,
     }
   });
+
+  const sender= {
+    email: "hello@demomailtrap.com",
+    name: data.fromEmail
+  }
+
+  mailClient.send({
+    from: sender,
+    to: [{ email: data.clientEmail }],
+    // subject: `Invoice ${data.invoiceNumber} from ${data.fromName}`,
+    // text: `Hello ${data.clientName},\n\nYou have a new invoice from ${data.fromName} for the amount of ${data.itemRate} ${data.currency}.\n\nPlease find the invoice attached.\n\nBest Regards,\n${data.fromName}`,
+    // category: "invoice test",
+    template_uuid: "eb703aa6-64b1-4960-9b78-a4b486f75124",
+    template_variables: {
+      "clientName": data.clientName,
+      "invoicenumber": data.invoiceNumber,
+      "dueDate": data.dueDate,
+      "total": data.itemTotal,
+    }
+  }).then(console.log, console.error);
 
   return redirect("/dashboard/invoices")
 
