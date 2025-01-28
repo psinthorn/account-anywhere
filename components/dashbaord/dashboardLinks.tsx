@@ -109,7 +109,7 @@ const DashboardLinks = () => {
       { productsLink.map((link) => {
         if(link.onedaytrip){
           return link.onedaytrip.map((trip) => (
-            <div className='ml-2'>
+            <div key={trip.id} className='ml-2'>
               <Link key={trip.id} href={trip.href} className={cn( 
                 pathName === trip.href ? 'text-primary bg-primary/10 text-sm'  
                 : 'text-muted-foreground hover:text-foreground', 'flex items-center text-sm gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary')}>
