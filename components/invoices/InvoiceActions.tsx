@@ -1,7 +1,7 @@
 import React from 'react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { Button } from '../ui/button'
-import { CheckCircle, DownloadCloud, Mail, MoreHorizontal, Pencil, Trash } from 'lucide-react'
+import { CheckCircle, DownloadCloud, Eye, Mail, MoreHorizontal, Pencil, Trash } from 'lucide-react'
 import Link from 'next/link'
 
 const InvoiceActions = ({invoiceId}: any) => {
@@ -15,8 +15,8 @@ const InvoiceActions = ({invoiceId}: any) => {
       <DropdownMenuContent align='end'>
         <DropdownMenuItem asChild>
         {/* <Link href="/dashboard/invoice/[invoiceId]" as={`/dashboard/invoice/${invoiceId}`}> */}
-          <Link href={`/invoice/${invoiceId}`}>
-            <Pencil className='size-4 mr-2'/> View Invoice
+          <Link href={`/invoice/${invoiceId}`} target='_blank'>
+            <Eye className='size-4 mr-2'/> View Invoice
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
@@ -25,7 +25,7 @@ const InvoiceActions = ({invoiceId}: any) => {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href={`/invoice/${invoiceId}`}>
+          <Link href={`/invoice/${invoiceId}`} target='_blank'>
             <DownloadCloud className='size-4 mr-2'/> Download Invoice
           </Link>
         </DropdownMenuItem>
