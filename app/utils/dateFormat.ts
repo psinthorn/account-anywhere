@@ -4,6 +4,9 @@ export function dateFormat({ date }: any, localCode: string) {
   }).format(date);
 };
 
-export function splitDate(date: string) {
-  return date.split('/')[2];
+export function splitDate({date}: any) {
+  const newDate =  new Intl.DateTimeFormat("th-TH", {
+    dateStyle: "short",
+  }).format(date);
+  return newDate.split('/');
 }

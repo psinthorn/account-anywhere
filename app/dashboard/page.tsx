@@ -7,7 +7,7 @@ import { link } from 'fs';
 import { Activity, Coins, DollarSign, User, Waves } from 'lucide-react';
 
 const DashboardPage = async () => {
-  const session = await requireAuth();
+  // const session = await requireAuth();
 
   const CardBlocks = [
     {
