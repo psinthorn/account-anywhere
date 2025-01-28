@@ -39,7 +39,7 @@ export const invoiceSchema = z.object({
   // itemModel:       z.string().min(1, "Required, and not meet minimum character"),
   // itemName:        z.string().min(1, "Required, and not meet minimum character"), // get data from hidden input
   itemDescription: z.string().min(1, "Required, and not meet minimum character"),
-  itemQuatity:     z.number().min(1, "Total can't be 0"),
+  itemQuantity:     z.number().min(1, "Total can't be 0"),
   itemRate:        z.number().min(1, "Total can't be 0"),
   itemTotal:       z.number().optional(),
 

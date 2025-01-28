@@ -4,7 +4,7 @@ import { Menu, User2 } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 import { signOut } from '../utils/auth';
-import DashboardLinks from '@/components/dashboardLinks';
+import DashboardLinks from '@/components/dashbaord/dashboardLinks';
 
 const Navbar = () => {
   return (

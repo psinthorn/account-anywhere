@@ -12,25 +12,31 @@ import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '../ui/calendar'
 import { Textarea } from '../ui/textarea'
 import SubmitButton from '../form/SubmitButton'
-import { CreateInvoice } from '@/app/actions'
+import { UpdateInvoiceByID } from '@/app/actions'
 import { parseWithZod } from '@conform-to/zod'
 import { useForm } from '@conform-to/react'
 import { invoiceSchema } from '@/app/utils/zodSchemas'
 import { formatCurrency } from '@/app/utils/formatCurrency'
+import { Prisma } from '@prisma/client'
 
-const CreateInvoiceForm = ({userData}: any ) => {
 
-  const [selectedDate, setSelectedDate] = useState(new Date())
-  const [rate, setRate] = useState("0")
-  const [quantity, setQuantity] = useState("0")
-  const [subTotal, setSubTotal] = useState("0")
-  const [itemTotal, setItemTotal] = useState("0")
-  const [currencyCode, setCurrencyCode] = useState("THB")
-  const [tax, setTax] = useState("0")
-  const [discount, setDiscount] = useState("0")
-  const [dueDate, setDueDate] = useState("cash")
+// interface InvoiceProps {
+//   data: Prisma.InvoiceGetPayload<{}>;
+// };
 
-  const [lastResult, actionForm] = useActionState(CreateInvoice, undefined)
+const UpdateInvoiceForm = ({invoice}: any) => {
+
+  const [selectedDate, setSelectedDate] = useState(invoice.data.date)
+  const [rate, setRate] = useState(invoice.data.itemRate)
+  const [quantity, setQuantity] = useState(invoice.data.itemQuantity)
+  const [subTotal, setSubTotal] = useState(invoice.data.subTotal)
+  const [itemTotal, setItemTotal] = useState(invoice.data.itemTotal)
+  const [currencyCode, setCurrencyCode] = useState(invoice.data.currency)
+  const [tax, setTax] = useState(invoice.data.vatPercent  || 0)
+  const [discount, setDiscount] = useState(invoice.data.discountPercent || 0)   
+  const [dueDate, setDueDate] = useState(invoice.data.dueDate)
+
+  const [lastResult, actionForm] = useActionState(UpdateInvoiceByID, undefined)
 
   const [form, fields] = useForm({
       lastResult,
@@ -52,14 +58,14 @@ const CreateInvoiceForm = ({userData}: any ) => {
 
     // calculate subtotal when rate or quantity value is change
     const CalculateSubTotal = async () => {
-      const result = ((parseFloat(rate) || 0) * (parseFloat(quantity) || 0));
+      const result = ((rate || 0) * (quantity || 0));
       return result;
     };
 
     useEffect(() => {
       const updateSubTotal = async () => {
         const result = await CalculateSubTotal();
-        setSubTotal(result.toString());
+        setSubTotal(result);
       };
       updateSubTotal();
 
@@ -69,11 +75,11 @@ const CreateInvoiceForm = ({userData}: any ) => {
   return (
     <Card className='w-full max-w-4xl mx-auto'>
       <CardHeader>
-        <CardTitle>
+        <CardTitle className='text-lg'>
           Invoice
         </CardTitle>
         <CardDescription>
-          Create invoice
+          Edit invoice
         </CardDescription>
       </CardHeader>
       <CardContent className='p-6'>
@@ -86,6 +92,7 @@ const CreateInvoiceForm = ({userData}: any ) => {
 
           <input type="hidden" name={fields.date.name} key={fields.date.key} value={selectedDate.toISOString()} />
           <input type="hidden" name={fields.itemTotal.name} key={fields.itemTotal.key} value={itemTotal}  />
+          <input type="hidden" name="id" value={invoice.data.id}  />
 
           <div className="flex flex-col gap-1 w-fit mb-6">
             <div className="flex items-center gap-4">
@@ -93,7 +100,7 @@ const CreateInvoiceForm = ({userData}: any ) => {
               <Input  
                 name={fields.title.name}
                 key={fields.title.key}
-                defaultValue={fields.title.initialValue}
+                defaultValue={invoice.data.title}
                 type='text' 
                 placeholder='Invoice Title' 
               />
@@ -109,7 +116,7 @@ const CreateInvoiceForm = ({userData}: any ) => {
                 <Input 
                   name={fields.invoiceNumber.name}
                   key={fields.invoiceNumber.key}
-                  defaultValue={fields.invoiceNumber.initialValue}
+                  defaultValue={invoice.data.invoiceNumber}
                   type='text' 
                   placeholder='INV-111223-008' 
                   className='rounded-l-none' 
@@ -150,21 +157,21 @@ const CreateInvoiceForm = ({userData}: any ) => {
                 <Input 
                   name={fields.fromName.name}
                   key={fields.fromName.key}
-                  defaultValue={fields.fromName.initialValue}
+                  defaultValue={invoice.data.fromName}
                   placeholder='Your Name/Company Name' 
                 />
                 <p className="text-sm text-red-500">{fields.fromName.errors}</p>
                 <Input  
                   name={fields.fromEmail.name}
                   key={fields.fromEmail.key}
-                  defaultValue={fields.fromEmail.initialValue}
+                  defaultValue={invoice.data.fromEmail}
                   placeholder='Your Email' 
                 />
                 <p className="text-sm text-red-500">{fields.fromEmail.errors}</p>
                 <Input 
                   name={fields.fromAddress.name}
                   key={fields.fromAddress.key}
-                  defaultValue={fields.fromAddress.initialValue}
+                  defaultValue={invoice.data.fromAddress}
                   placeholder='Your Address' 
                 />
                 <p className="text-sm text-red-500">{fields.fromAddress.errors}</p>
@@ -176,19 +183,19 @@ const CreateInvoiceForm = ({userData}: any ) => {
                 <Input
                   name={fields.clientName.name}
                   key={fields.clientName.key}
-                  defaultValue={fields.clientName.initialValue}
+                  defaultValue={invoice.data.clientName}
                   placeholder='Client Name' />
                 <p className="text-sm text-red-500">{fields.clientName.errors}</p>
                 <Input
                   name={fields.clientEmail.name}
                   key={fields.clientEmail.key}
-                  defaultValue={fields.clientEmail.initialValue}
+                  defaultValue={invoice.data.clientEmail}
                   placeholder='Client Email' />
                 <p className="text-sm text-red-500">{fields.clientEmail.errors}</p>
                 <Input
                   name={fields.clientAddress.name}
                   key={fields.clientAddress.key}
-                  defaultValue={fields.clientAddress.initialValue}
+                  defaultValue={invoice.data.clientAddress}
                   placeholder='Client Address' />
                 <p className="text-sm text-red-500">{fields.clientAddress.errors}</p>
               </div>
@@ -257,6 +264,7 @@ const CreateInvoiceForm = ({userData}: any ) => {
                 name={fields.itemId.name}
                 key={fields.itemId.key}
                 type="text" 
+                defaultValue={invoice.data.itemId ?? ''}
                 placeholder='MOD-123X321-1' 
                 className='text-right' 
                 />
@@ -266,21 +274,23 @@ const CreateInvoiceForm = ({userData}: any ) => {
               <Textarea
                 name={fields.itemDescription.name}
                 key={fields.itemDescription.key}
+                defaultValue={invoice.data.itemDescription ?? ''}
                 placeholder='Add your item description here...' />
+
                 <span className="text-sm text-red-500">{fields.itemDescription.errors}</span>
             </p>
             <p className="col-span-2">
               <Input 
-                name={fields.itemQuatity.name}
-                key={fields.itemQuatity.key}
+                name={fields.itemQuantity.name}
+                key={fields.itemQuantity.key}
                 type="number" 
                 placeholder='0' 
                 className='text-right' 
                 value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
+                onChange={(e) => setQuantity(Number(e.target.value))}
                 // onChange={(e) => (setQuantity(parseInt(e.target.value)), console.log("Quantity: ", quantity))}
               />
-              <span className="text-sm text-red-500">{fields.itemQuatity.errors}</span>
+              <span className="text-sm text-red-500">{fields.itemQuantity.errors}</span>
             </p>
             <p className="col-span-2">
               <Input 
@@ -290,7 +300,7 @@ const CreateInvoiceForm = ({userData}: any ) => {
                 placeholder="0"
                 className='text-right' 
                 value={rate}
-                onChange={(e) => setRate(e.target.value)}
+                onChange={(e) => setRate(Number(e.target.value))}
                 // onChange={(e) => (setRate(parseInt(e.target.value)), console.log("Rate: ", rate))}
               />
                 <span className="text-sm text-red-500">{fields.itemRate.errors}</span>
@@ -299,7 +309,7 @@ const CreateInvoiceForm = ({userData}: any ) => {
               <Input              
                 type="text" 
                 placeholder='0' 
-                value={formatCurrency(parseInt(subTotal), currencyCode)}
+                value={formatCurrency(subTotal, currencyCode)}
                 className='text-right' 
                 disabled 
                 // defaultValue={0}
@@ -317,23 +327,23 @@ const CreateInvoiceForm = ({userData}: any ) => {
             <div className="w-1/3">
               <div className="flex justify-between py-4">
                 <span>Subtotal</span>
-                <span>{formatCurrency(parseInt(subTotal), currencyCode)}</span>
+                <span>{formatCurrency(subTotal, currencyCode)}</span>
               </div>
               <div className="flex justify-between py-2 border-t">
                 <span>Discont</span>
-                <span>{formatCurrency(parseInt(subTotal) , currencyCode)}</span>
+                <span>{formatCurrency(subTotal , currencyCode)}</span>
               </div>
               <div className="flex justify-between py-2 border-t">
                 <span>Total</span>
-                <span>{formatCurrency(parseInt(subTotal), currencyCode)}</span>
+                <span>{formatCurrency(subTotal, currencyCode)}</span>
               </div>
               <div className="flex justify-between py-2 border-t">
                 <span>Vat 7%</span>
-                <span className='font-medium'>{formatCurrency(parseInt(tax),currencyCode)}</span>
+                <span className='font-medium'>{formatCurrency(tax, currencyCode)}</span>
               </div>
               <div className="flex justify-between py-2 border-t">
                 <span>Grand Total ({currencyCode})</span>
-                <span className='font-medium underline underline-offset-2'>{formatCurrency(parseInt(subTotal)+parseInt(tax), currencyCode)}</span>
+                <span className='font-medium underline underline-offset-2'>{formatCurrency(subTotal + tax, currencyCode)}</span>
               </div>
             </div>
           </div>
@@ -343,12 +353,13 @@ const CreateInvoiceForm = ({userData}: any ) => {
               <Textarea 
                 name={fields.note.name}
                 key={fields.note.key}
+                defaultValue={invoice.data.note ?? ''} 
                 placeholder='Add your note here...'
               />
             </div>
             <div className="flex items-center justify-end mt-6">
               <div>
-                <SubmitButton text="Send Invoice to Client" />
+                <SubmitButton text="Update Invoice" />
               </div>
             </div>
         </form>
@@ -357,4 +368,4 @@ const CreateInvoiceForm = ({userData}: any ) => {
   )
 }
 
-export default CreateInvoiceForm
+export default UpdateInvoiceForm

@@ -71,7 +71,7 @@ const CardFullWidth = ({title, description, buttonName, link, invoices}: CardFul
                     <TableCell><Badge>{inv.status}</Badge></TableCell>
                     <TableCell>{dateFormat(inv.createdAt, "th-TH")} - {splitDate(dateFormat(inv.createdAt, "th-TH"))}</TableCell>
                     <TableCell className='text-right'>
-                      <InvoiceActions />
+                      <InvoiceActions invoiceId={inv.id} />
                     </TableCell>
                   </TableRow>
                 ))}

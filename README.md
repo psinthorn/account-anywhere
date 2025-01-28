@@ -75,3 +75,13 @@ pnpm dlx prisma studio
   pnpm install mailtrap
 
 ```
+
+## Generate PDF with jsPDF
+
+instal jsPDF
+
+```
+  # Install jsPDF
+  pnpm install jspdf
+
+```
