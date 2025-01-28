@@ -271,8 +271,8 @@ const CreateInvoiceForm = ({userData}: any ) => {
             </p>
             <p className="col-span-2">
               <Input 
-                name={fields.itemQuatity.name}
-                key={fields.itemQuatity.key}
+                name={fields.itemQuantity.name}
+                key={fields.itemQuantity.key}
                 type="number" 
                 placeholder='0' 
                 className='text-right' 
@@ -280,7 +280,7 @@ const CreateInvoiceForm = ({userData}: any ) => {
                 onChange={(e) => setQuantity(e.target.value)}
                 // onChange={(e) => (setQuantity(parseInt(e.target.value)), console.log("Quantity: ", quantity))}
               />
-              <span className="text-sm text-red-500">{fields.itemQuatity.errors}</span>
+              <span className="text-sm text-red-500">{fields.itemQuantity.errors}</span>
             </p>
             <p className="col-span-2">
               <Input 
