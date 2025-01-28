@@ -6,13 +6,13 @@ import React from 'react'
 
 
 const EditInvoiceRoute = async ({ params }: { params: { invoiceId: string }} ) => {
-  const session = requireAuth()
-  const userId = (await session).user?.id;
+  const session = await requireAuth()
+  const userId = session.user?.id;
   if (!userId) {
     throw new Error('User ID is undefined');
   }
 
-  const { invoiceId } = await params;
+  const { invoiceId } = params;
 
   interface InvoiceProps {
     data: Prisma.InvoiceGetPayload<{}>;
