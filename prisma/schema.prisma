@@ -211,7 +211,7 @@ model Invoice {
   itemModel       String @default("MOD-111223")
   itemName        String @default("Account Anywhrer")
   itemDescription String @default("Accpount made simple from anywhere service")
-  itemQuatity     Int    @default(0)
+  itemQuantity    Int    @default(0)
   itemRate        Int    @default(0)
   itemTotal       Int    @default(0)
 

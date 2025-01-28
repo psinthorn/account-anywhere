@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import DashboardLinks from '@/components/dashboardLinks'
+import DashboardLinks from '@/components/dashbaord/dashboardLinks'
 import Logo from '@/public/f2-logo-color.jpeg' // Adjust the path to the actual location of your logo file
 import Link from 'next/link'
 
