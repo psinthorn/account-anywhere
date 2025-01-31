@@ -1,11 +1,11 @@
 import CardFullWidth from '@/components/dashbaord/CardFullWidth'
+import RequestInfomationForm from '@/components/form/RequestInfomationForm'
 import React from 'react'
 
 const PurchasingRequests = () => {
   return (
 
-    <>Purchasing Request</>
-    // <CardFullWidth title='Purchasing Requests' description='Manage your purchasing requests' buttonName="Create Purchasing Request" link="/dashboard/purchasing-requests/create" />
+    <RequestInfomationForm />
   
   )
 }
