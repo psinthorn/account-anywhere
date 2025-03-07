@@ -13,15 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// datasource db {
-//   provider = "postgresql"
-//   url      = env("DATABASE_URL")
-// }
-
-// generator client {
-//   provider = "prisma-client-js"
-// }
-
 model User {
   id                 String            @id @default(cuid())
   firstName          String?
@@ -38,6 +29,7 @@ model User {
   taxInvoiceReceipts TaxInvoiceReipt[]
   vouchers           Voucher[]
   organizations      Organization[]
+  role               String            @default("USER")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -96,6 +88,33 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
+}
+
+model Request {
+  id       String @id @default(uuid())
+  number   String
+  userId   String
+  clientId String // buyer
+  vendorId String // suplier
+  agentId  String
+
+  date      DateTime
+  validDate DateTime
+  total     Int
+
+  fromName      String // suplier
+  fromEmail     String
+  fromAddress   String
+  clientName    String // buyer
+  clientEmail   String
+  clientAddress String
+  note          String?
+  status        ReqestStatus
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  items Item[]
 }
 
 model PurchasingRequest {
@@ -292,12 +311,6 @@ model Voucher {
   status        VoucherStatus
 
   Items Item[]
-  // itemId          String
-  // itemModel       String
-  // itemName        String
-  // itemDescription String
-  // itemQuatity     Int
-  // itemRate        Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -342,11 +355,15 @@ model Item {
   id          String   @id @default(uuid())
   number      String
   model       String
-  category    String
-  name        String
+  title       String
   description String?
+  category    String
+  subCategory String
   quantity    Int
   rate        Int
+  total       Int
+  pickUpPoint String?
+  note        String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -366,6 +383,8 @@ model Item {
   taxInvoiceReiptId   String?
   // Invoice             Invoice?           @relation(fields: [invoiceId], references: [id])
   // invoiceId           String?
+  Request             Request?           @relation(fields: [requestId], references: [id])
+  requestId           String?
 }
 
 model Address {
@@ -396,6 +415,14 @@ model Organization {
   updatedAt DateTime @updatedAt
   User      User?    @relation(fields: [userId], references: [id])
   userId    String?
+}
+
+enum ReqestStatus {
+  PENDING
+  APPROVED
+  CONFIRMED
+  REJECTED
+  CANCELLED
 }
 
 enum PurchasingReqestStatus {

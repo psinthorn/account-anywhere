@@ -6,7 +6,6 @@ import Link from 'next/link'
 
 const SideBar = () => {
   return (
-   
     <div className='hidden border-r bg-muted/40 md:block'>
       <div className='flex flex-col items-center max-h-screen h-full gap-2 px-2 py-2'>
         <div className='flex items-center justify-center lg:h-[60px] lg:px-6 lg:py-6'>

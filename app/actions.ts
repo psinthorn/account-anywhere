@@ -3,7 +3,7 @@
 import { notFound, redirect } from "next/navigation"
 import prisma from "./utils/db"
 import { requireAuth } from "./utils/hooks"
-import { invoiceSchema, onboardingSchema } from "./utils/zodSchemas"
+import { invoiceSchema, onboardingSchema, requestSchema } from "./utils/zodSchemas"
 import { parseWithZod } from "@conform-to/zod"
 import { mailClient } from "./utils/mailtrap"
 // import { sub } from "date-fns"
@@ -33,6 +33,28 @@ export const OnboardUser =  async (prevState: any ,formDara: FormData) => {
 
   return redirect("/dashboard")
 };
+
+// Create new invoice
+export const CreateRequest = async (prevState: any, formData: FormData) => {
+  // authenticae the user
+  const session = requireAuth()
+
+  // Parse the form data using the zod schema
+  const submission = parseWithZod(formData, {
+    schema: requestSchema
+  });
+
+  // If the submission is not successful, return the error message
+  if (submission.status !== "success") {
+    return submission.reply();
+  }
+
+  // Create a new request in the database
+  
+
+
+  return;
+}
 
 // create new invoice for client or customer
 export const CreateInvoice = async  (prevState: any ,formData: FormData) => {
