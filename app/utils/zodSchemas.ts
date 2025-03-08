@@ -7,6 +7,18 @@ export const onboardingSchema =  z.object({
   address: z.string().min(2, "Minimum is 2 characters")
 });
 
+export const agentSchema = z.object({
+  firstName: z.string().min(2, "Minimum is 2 characters"),
+  lastName: z.string().min(2, "Minimum is 2 characters"),
+  email: z.string().email("Invalid email address"),
+  phone: z.string().min(2, "Minimum is 2 characters"),
+  address: z.string().min(2, "Minimum is 2 characters"),
+  city: z.string().min(2, "Minimum is 2 characters"),
+  country: z.string().min(2, "Minimum is 2 characters"),
+  postalCode: z.string().min(2, "Minimum is 2 characters"),
+  avatar: z.string().min(2, "Minimum is 2 characters"),
+  status: z.enum(["ACTIVE", "INACTIVE"]).default("ACTIVE"),
+});
 
 export const requestSchema = z.object({
   title: z.string().min(2, "Required, and not meet minimum character"),

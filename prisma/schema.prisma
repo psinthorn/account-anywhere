@@ -90,6 +90,24 @@ model Authenticator {
   @@id([userId, credentialID])
 }
 
+// Agent Model Schema
+model Agent {
+  id           String  @id @default(uuid())
+  nameTH       String
+  nameEN       String
+  taxId        String
+  email        String
+  phone        String
+  mobile       String
+  royaltyLevel String
+  socials      String
+  address      String
+  note         String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Request {
   id       String @id @default(uuid())
   number   String

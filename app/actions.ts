@@ -3,7 +3,7 @@
 import { notFound, redirect } from "next/navigation"
 import prisma from "./utils/db"
 import { requireAuth } from "./utils/hooks"
-import { invoiceSchema, onboardingSchema, requestSchema } from "./utils/zodSchemas"
+import { invoiceSchema, onboardingSchema, requestSchema, agentSchema } from "./utils/zodSchemas"
 import { parseWithZod } from "@conform-to/zod"
 import { mailClient } from "./utils/mailtrap"
 // import { sub } from "date-fns"
@@ -32,6 +32,17 @@ export const OnboardUser =  async (prevState: any ,formDara: FormData) => {
   });
 
   return redirect("/dashboard")
+};
+
+// Create new agent
+export const CreateAgent = async (prevState: any, formData: FormData) => {
+  // authenticae the user
+  const session = requireAuth()
+
+  // Parse the form data using the zod schema
+  const submission = parseWithZod(formData, {
+    schema: agentSchema
+  });
 };
 
 // Create new invoice

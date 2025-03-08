@@ -1,3 +1,4 @@
+import F2Hero from "@/components/home/F2Hero";
 import Hero from "@/components/home/Hero";
 import Navbar from "@/components/home/Navbar";
 import { SignOut } from "@/components/sign-out";
@@ -7,7 +8,8 @@ export default function Home() {
   return (
     <main className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
       <Navbar />
-      <Hero />
+      <F2Hero />
+      {/* <Hero /> */}
       {/* <SignOut/> */}
     </main>
   );
