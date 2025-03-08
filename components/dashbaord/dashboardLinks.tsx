@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from '@/lib/utils'
-import { Circle, DollarSign, Folder, HandCoins, Home, LayoutDashboard, Notebook, Pen, Plus, Receipt, TicketPlus, Trees, Waves } from 'lucide-react'
+import { Circle, DollarSign, Folder, HandCoins, Home, LayoutDashboard, Magnet, Notebook, NotebookPen, Pen, Plus, Receipt, TicketPlus, Trees, Waves } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
@@ -68,7 +68,7 @@ export const productsLink = [
     onedaytrip: [
       {
         id: '9',
-        name: 'Angthorn National Marine Park',
+        name: 'Angthong National Marine Park',
         href: '/dashboard/products/oneday-trip/angthong-national-marine-park',
         icon: Trees,
       }, 
@@ -87,9 +87,32 @@ export const productsLink = [
     ]
   }
 
-]
+];
 
-
+export const AgentsTour = [
+  {
+    id: '12',
+    name: 'Agents',
+    href: '/dashboard/agents-dashboard',
+    icon: Folder
+  },
+  {
+    agents: [
+      {
+        id: '13',
+        name: 'All Agents',
+        href: '/dashboard/agents',
+        icon: Magnet,
+      }, 
+      {
+        id: '14',
+        name: 'Contract Agents',
+        href: '/dashboard/contracts',
+        icon: NotebookPen,
+      },
+    ]
+  }
+];
 
 const DashboardLinks = () => {
   const pathName = usePathname()
@@ -103,17 +126,42 @@ const DashboardLinks = () => {
             <link.icon className='size-4 mr-2'/> {link.name}
           </Link>
       
-      ))}
+      ))};
 
       <hr className='py-2'/>
-      { productsLink.map((link) => {
-        if(link.onedaytrip){
-          return link.onedaytrip.map((trip) => (
-            <div key={trip.id} className='ml-2'>
-              <Link key={trip.id} href={trip.href} className={cn( 
-                pathName === trip.href ? 'text-primary bg-primary/10 text-sm'  
+        { productsLink.map((link) => {
+          if(link.onedaytrip){
+            return link.onedaytrip.map((trip) => (
+              <div key={trip.id} className='ml-2'>
+                <Link key={trip.id} href={trip.href} className={cn( 
+                  pathName === trip.href ? 'text-primary bg-primary/10 text-sm'  
+                  : 'text-muted-foreground hover:text-foreground', 'flex items-center text-sm gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary')}>
+                  <trip.icon className='size-4 mr-2'/> {trip.name}
+                </Link>
+              </div>
+            ))
+          }else{
+            return (
+                <Link key={link.id} href={link.href} className={cn(pathName === link.href 
+                  ? 'text-primary bg-primary/10 font-bold' 
+                  : 'text-muted-foreground hover:text-foreground', 'flex items-center font-bold gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary')}>
+                  <link.icon className='size-4 mr-2' />{link.name}
+                </Link>
+            )
+          }
+          
+          })
+        };
+
+    <hr className='py-2'/>
+      { AgentsTour.map((link) => {
+        if(link.agents){
+          return link.agents.map((agent) => (
+            <div key={agent.id} className='ml-2'>
+              <Link key={agent.id} href={agent.href} className={cn( 
+                pathName === agent.href ? 'text-primary bg-primary/10 text-sm'  
                 : 'text-muted-foreground hover:text-foreground', 'flex items-center text-sm gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary')}>
-                <trip.icon className='size-4 mr-2'/> {trip.name}
+                <agent.icon className='size-4 mr-2'/> {agent.name}
               </Link>
             </div>
           ))
@@ -124,11 +172,11 @@ const DashboardLinks = () => {
                 : 'text-muted-foreground hover:text-foreground', 'flex items-center font-bold gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary')}>
                 <link.icon className='size-4 mr-2' />{link.name}
               </Link>
-          );
+          )
         }
-         
+        
         })
-      }
+      };
     </>
   )
 }

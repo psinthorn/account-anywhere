@@ -68,6 +68,16 @@ pnpm dlx prisma studio
   pnpx prisma studio
 ```
 
+To create a migration and update the Prisma client, you can use the following commands in your terminal:
+
+Create a new migration:
+
+Replace <migration_name> with a descriptive name for your migration.
+
+Update the Prisma client:
+
+These commands will create a new migration based on your Prisma schema changes and update the Prisma client to reflect the latest schema.
+
 ## How to install Mailtrap
 
 ```
