@@ -5,7 +5,7 @@ import { Plus, PlusCircle } from 'lucide-react';
 interface DashboardCardProps {
   title: string;
   description: string;
-  total: number;
+  total?: number;
   link: string,
   icon: any;
 }
@@ -24,7 +24,10 @@ const DashboardCardBlock = ({title, description, total, link, icon}: DashboardCa
           </CardDescription> */}
         </CardHeader>
         <CardContent>
-          <h2 className='flex items-center text-2xl font-bold'><Plus/>{total}</h2>
+          <h2 className='flex items-center text-2xl font-bold'>
+            {/* <Plus/> */}
+            {total}
+          </h2>
           <p className='text-xs text-muted-foreground'>{description}</p>
         </CardContent>
       </Card>
