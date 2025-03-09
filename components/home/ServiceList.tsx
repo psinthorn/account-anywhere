@@ -25,8 +25,8 @@ const Services = [
     icon: <FolderCode/>
   },
   {
-    title: 'Process Automation',
-    description: 'Automate your business processes to improve efficiency and reduce costs.',
+    title: 'Artificial Intelligence Solutions',
+    description: 'Leverage AI to automate tasks, analyze data, and improve decision-making processes.',
     total: 10,
     link: '/adope-project',
     icon: <Bot/>
@@ -46,8 +46,8 @@ const Services = [
     icon: <ShieldCheck/>
   },
   {
-    title: 'Change Management',
-    description: 'Manage organizational change effectively to ensure successful implementation of new technologies and processes.',
+    title: 'IOT and Smart Devices',
+    description: 'Connect and control your devices to improve efficiency and enhance customer experiences.',
     total: 10,
     link: '/adope-project',
     icon: <HeartPulse/>
@@ -65,10 +65,10 @@ const ServiceList = () => {
   return (
     <div>
       <h2 className='text-4xl font-bold text-center text-primary'>Our Services</h2>
-      <p className='text-center text-lg text-muted-foreground px-40 mt-4'>
+      <p className='text-center text-lg text-muted-foreground lg:px-40 md:px-16 sm:px-4 mt-4'>
         We offer a wide range of digital transformation services to help your business succeed in the digital age.
         <br/>
-        <span>Explore our services below to learn more about how we can help you achieve your business goals.</span>
+        {/* <span>Explore our services below to learn more about how we can help you achieve your business goals.</span> */}
       </p>
       <div className='grid gap-4 my-16 md:grid-cols-2 lg:grid-cols-4 md:gap-8'>
         {Services.map((service, index) => (
