@@ -17,7 +17,7 @@ const Footer = () => {
         <span className='text-muted-foreground'>© {currentYear} F2 Co., Ltd. All rights reserved.</span>
       </div>
       <div>
-        <Link href="/contact/enquiry">
+        <Link href="/https://www.facebook.com/f2coltd" target='_blank'>
           <Button variant="outline">Socials Us</Button>
         </Link>
       </div>
