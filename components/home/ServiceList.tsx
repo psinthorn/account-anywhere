@@ -79,10 +79,10 @@ const ServiceList = () => {
             // total={service?.total} 
             link={service.link} 
             icon={service.icon}
-            
           />
         ))}
       </div>
+      <div id="our-services"></div>  
     </div>
   )
 }

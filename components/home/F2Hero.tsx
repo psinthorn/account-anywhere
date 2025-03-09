@@ -26,10 +26,10 @@ const F2Hero = () => {
           <div className='max-w-xl mx-auto mt-4 items-center justify-center text-center'>
             <p className='lg:text-lg text-muted-foreground'>"Transform your business operations and enhance customer experiences with our cutting-edge digital solutions.</p>
             <div className='mt-5 mb-12 text-center items-center justify-center'>
-              <Link href="/adope-project" className='mt-4'>
+              <Link href="#our-services" className='mt-4'>
                 <RainbowButton className='gap-2'><span>Discover More</span><Heart/></RainbowButton>
               </Link>
-            </div>        
+            </div>      
           </div>
       </div>
 
