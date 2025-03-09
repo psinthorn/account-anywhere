@@ -13,7 +13,7 @@ const Navbar = () => {
         {/* <h3 className='text-3xl font-semibold'>Account<span className='text-blue-800'>Anywhere</span></h3> */}
       </Link>
       <div>
-        <Link href="/account-anywhere">
+        <Link href="/contact/enquiry">
           <RainbowButton>Start Now</RainbowButton>
         </Link>
     </div>
