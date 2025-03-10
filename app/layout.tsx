@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Account Anywhere",
-  description: "Accounting software for freelancers and small businesses. Manage your transactions, invoices, and more.",
+  title: "F2 Co.,Ltd. - Digital Innovation Transformation",
+  description: "F2 Co.,Ltd. - We are a team of passionate people whose goal is to improve everyone's life through disruptive products. We build great products to solve your business problems.",
 };
 
 export default function RootLayout({
