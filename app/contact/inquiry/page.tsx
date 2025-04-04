@@ -1,10 +1,10 @@
-import Enquiry from '@/components/home/Enquiry'
+import Inquiry from '@/components/home/Inquiry'
 import React from 'react'
 
 const EnquiryPage = () => {
   return (
     <div className='container mx-auto mb-40'>
-      <Enquiry/>
+      <Inquiry/>
     </div>
   )
 }

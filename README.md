@@ -71,6 +71,7 @@ pnpm dlx prisma studio
 To create a migration and update the Prisma client, you can use the following commands in your terminal:
 
 Create a new migration:
+pnpx prisma migrate dev --name <migration_name>
 
 Replace <migration_name> with a descriptive name for your migration.
 

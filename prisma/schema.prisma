@@ -108,6 +108,36 @@ model Agent {
   updatedAt DateTime @updatedAt
 }
 
+model Inquiry {
+  id              String        @id @default(uuid())
+  userId          String
+  clientId        String // buyer
+  vendorId        String // suplier
+  agentId         String
+  inquiryNumber   String // inquiry number
+  originalInquiry String? // origin inquiry like from where or from who
+  // total          Int
+  //date            DateTime
+  // validDate      DateTime
+  fromName        String // suplier
+  fromEmail       String
+  note            String?
+  preferDate      DateTime      @default(now())
+  preferTime      String        @default("09:00")
+  preferLocation  String
+  status          InquiryStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum InquiryStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
 model Request {
   id       String @id @default(uuid())
   number   String

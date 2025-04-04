@@ -1,7 +1,7 @@
 import React from 'react'
-import CreateEnquiryForm from '../form/CreateEnquiryForm'
+import CreateInquiryForm from '../form/CreateInquiryForm'
 
-const Enquiry = () => {
+const Inquiry = () => {
 
   return (
     <div>
@@ -9,7 +9,7 @@ const Enquiry = () => {
         <div className='text-center'>
           <div className='text-center mt-8 text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tighter'>
             <h1>
-              Send Us Your Requirments
+              Send Us Your Inquies
             </h1>
           </div>
           <div className='max-w-xl mx-auto mt-4 items-center justify-center text-center'>
@@ -21,9 +21,9 @@ const Enquiry = () => {
           </div>
         </div>
       </div> 
-      <CreateEnquiryForm /> 
+      <CreateInquiryForm /> 
     </div>
   ) 
 } 
 
-export default Enquiry
+export default Inquiry
