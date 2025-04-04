@@ -38,7 +38,7 @@ const CreateEnquiryForm = ({userData}: any ) => {
     <Card className='w-full max-w-4xl mx-auto'>
       <CardHeader>
         <CardTitle>
-          Enquiry Form
+          Inquiry Form
         </CardTitle>
         <CardDescription>
           Fill the form to send your your ideas and requierments to us.
@@ -63,7 +63,7 @@ const CreateEnquiryForm = ({userData}: any ) => {
                 key={fields.title.key}
                 defaultValue={fields.title.initialValue}
                 type='text' 
-                placeholder='Enquiry Title' 
+                placeholder='Inquiry Title' 
               />
               
             </div>
@@ -119,20 +119,20 @@ const CreateEnquiryForm = ({userData}: any ) => {
           </div>
          
           <div className='my-8'>
-              <Label>Your Enquiries</Label>
+              <Label>Your Inquiries</Label>
               <Textarea 
                 name={fields.note.name}
                 key={fields.note.key}
-                placeholder='Add your enquiries here...'
+                placeholder='Add your inquiries here...'
               />
           </div>  
 
             <div className="flex items-center justify-center mt-6">
               <div className="w-full text-muted-foreground">
-              *Your enquiry is will keep as confidential and will not be shared with any third party.
+              *Your inquiry is will keep as confidential and will not be shared with any third party.
               </div>
               <div>
-                <SubmitButton text="Send Your Enquiries" />
+                <SubmitButton text="Send Your Inquiries" />
               </div>
             </div>
         </form>
