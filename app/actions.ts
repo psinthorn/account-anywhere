@@ -44,9 +44,8 @@ export const CreateAgent = async (prevState: any, formData: FormData) => {
 };
 
 export const CreateInquiry = async (prevState: any, formData: FormData) => {
-  console.log("Create Inquiry action")
   // authenticae the user
-  const session = requireAuth()
+  // const session = requireAuth()
   // Parse the form data using the zod schema
   const submission = parseWithZod(formData, {
     schema: inQuirySchema 
@@ -66,7 +65,7 @@ export const CreateInquiry = async (prevState: any, formData: FormData) => {
       email: submission.value.email,
       preferDate: submission.value.preferDate,
       note: submission.value.note,
-      userId: (await session).user?.id,
+      // userId: (await session).user?.id,
     }
   };
   console.log("data from submission: ", data)
@@ -90,11 +89,18 @@ export const CreateInquiry = async (prevState: any, formData: FormData) => {
       email: data.data.email,
     }
   ];
+
+  const administrator = [
+    {
+      email: "f2coltd@gmail.com",
+    }
+  ];
   
   client
     .send({
       from: sender,
       to: recipients,
+      cc: administrator, // Add CC recipients here
       subject: "Your Inquiry Information",
       html: `
         <html>
