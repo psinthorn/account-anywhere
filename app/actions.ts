@@ -3,11 +3,9 @@
 import { notFound, redirect } from "next/navigation"
 import prisma from "./utils/db"
 import { requireAuth } from "./utils/hooks"
-import { invoiceSchema, onboardingSchema, requestSchema, agentSchema } from "./utils/zodSchemas"
+import { invoiceSchema, onboardingSchema, requestSchema, agentSchema, inQuirySchema } from "./utils/zodSchemas"
 import { parseWithZod } from "@conform-to/zod"
 import { mailClient } from "./utils/mailtrap"
-// import { sub } from "date-fns"
-
 
 export const OnboardUser =  async (prevState: any ,formDara: FormData) => {
   const session = requireAuth()
@@ -45,6 +43,83 @@ export const CreateAgent = async (prevState: any, formData: FormData) => {
   });
 };
 
+export const CreateInquiry = async (prevState: any, formData: FormData) => {
+  console.log("Create Inquiry action")
+  // authenticae the user
+  const session = requireAuth()
+  // Parse the form data using the zod schema
+  const submission = parseWithZod(formData, {
+    schema: inQuirySchema 
+  });
+  // If the submission is not successful, return the error message
+  if (submission.status !== "success") {
+    return submission.reply();
+  }
+  // Create a new inquiry in the database  
+ 
+  const data = {
+    data: {
+      title: submission.value.title,
+      // date: submission.value.date,
+      inquiryId: submission.value.inquiryId,
+      name: submission.value.name,
+      email: submission.value.email,
+      preferDate: submission.value.preferDate,
+      note: submission.value.note,
+      userId: (await session).user?.id,
+    }
+  };
+  console.log("data from submission: ", data)
+
+  // Send email to the user 
+  console.log("Send email to the user")
+  const { MailtrapClient } = require("mailtrap");
+
+  const TOKEN = process.env.MAILTRAP_F2_API_TOKEN;
+  
+  const client = new MailtrapClient({
+    token: TOKEN,
+  });
+  
+  const sender = {
+    email: "inquiry@f2.co.th",
+    name: "Inquiry of F2 Co.,Ltd.",
+  };
+  const recipients = [
+    {
+      email: data.data.email,
+    }
+  ];
+  
+  client
+    .send({
+      from: sender,
+      to: recipients,
+      subject: "Your Inquiry Information",
+      html: `
+        <html>
+          <body>
+            <h1>Congratulations!</h1>
+            <p>Your first step of transformation has begun.</p>
+            <hr>
+            <p><b>From:</b> ${data.data.name}</p>
+            <p><b>Email:</b> ${data.data.email}</p>
+            <p><b>Prefer Call or Conferrence Date:</b> ${data.data.preferDate}</p>
+            <p><b>Inquiry:</b>
+            <p>${data.data.note}</p>
+            <br>
+            <p>Thank you for your inquiry with us</p>
+          </body>
+        </html>
+      `,
+      category: "Inquiry",
+    })
+    .then(console.log, console.error);
+
+  // send mail to admin 
+  console.log("Send email to admin")
+}
+
 // Create new invoice
 export const CreateRequest = async (prevState: any, formData: FormData) => {
   // authenticae the user
@@ -61,8 +136,6 @@ export const CreateRequest = async (prevState: any, formData: FormData) => {
   }
 
   // Create a new request in the database
-  
-
 
   return;
 }

@@ -1,70 +1,38 @@
 "use client"
 
-import React, { useActionState, useEffect, useState } from 'react'
+import React, { useActionState, useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
 import { Badge } from '../ui/badge'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
+// import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Button } from '../ui/button'
 import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '../ui/calendar'
 import { Textarea } from '../ui/textarea'
 import SubmitButton from './SubmitButton'
-import { CreateInvoice } from '@/app/actions'
+import { CreateInquiry, CreateInvoice } from '@/app/actions'
 import { parseWithZod } from '@conform-to/zod'
 import { useForm } from '@conform-to/react'
-import { invoiceSchema } from '@/app/utils/zodSchemas'
-import { formatCurrency } from '@/app/utils/formatCurrency'
+import { inQuirySchema, } from '@/app/utils/zodSchemas'
 
 const CreateEnquiryForm = ({userData}: any ) => {
 
   const [selectedDate, setSelectedDate] = useState(new Date())
-  const [rate, setRate] = useState("0")
-  const [quantity, setQuantity] = useState("0")
-  const [subTotal, setSubTotal] = useState("0")
-  const [itemTotal, setItemTotal] = useState("0")
-  const [currencyCode, setCurrencyCode] = useState("THB")
-  const [tax, setTax] = useState("0")
-  const [discount, setDiscount] = useState("0")
-  const [dueDate, setDueDate] = useState("cash")
-
-  const [lastResult, actionForm] = useActionState(CreateInvoice, undefined)
+  const [lastResult, actionForm] = useActionState(CreateInquiry, undefined)
 
   const [form, fields] = useForm({
       lastResult,
   
       onValidate({ formData }: { formData: FormData }){
         return parseWithZod(formData, {
-          schema: invoiceSchema
+          schema: inQuirySchema
         });
       },
         shouldValidate: "onBlur",
         shouldRevalidate: "onInput"
     });
-
-    const handleCurrencyChange = (value: string) => {
-      const code = value.toUpperCase();
-      setCurrencyCode(code);
-      console.log(currencyCode);
-    }
-
-    // calculate subtotal when rate or quantity value is change
-    const CalculateSubTotal = async () => {
-      const result = ((parseFloat(rate) || 0) * (parseFloat(quantity) || 0));
-      return result;
-    };
-
-    useEffect(() => {
-      const updateSubTotal = async () => {
-        const result = await CalculateSubTotal();
-        setSubTotal(result.toString());
-      };
-      updateSubTotal();
-
-    }, [rate, quantity, currencyCode]);
-
 
   return (
     <Card className='w-full max-w-4xl mx-auto'>
@@ -83,9 +51,9 @@ const CreateEnquiryForm = ({userData}: any ) => {
           onSubmit={form.onSubmit}
           noValidate
           >
-
-          <input type="hidden" name={fields.date.name} key={fields.date.key} value={selectedDate.toISOString()} />
-          <input type="hidden" name={fields.itemTotal.name} key={fields.itemTotal.key} value={itemTotal}  />
+          <input type="hidden" name={fields.preferDate.name} key={fields.preferDate.key} value={selectedDate.toISOString()} />
+          {/* <input type="hidden" name={fields.date.name} key={fields.date.key} value={selectedDate.toISOString()} />
+          <input type="hidden" name={fields.itemTotal.name} key={fields.itemTotal.key} value={itemTotal}  /> */}
 
           <div className="flex flex-col gap-1 w-fit mb-6">
             <div className="flex items-center gap-4">
@@ -110,19 +78,19 @@ const CreateEnquiryForm = ({userData}: any ) => {
               <Label>From</Label>
               <div className='space-y-2'>
                 <Input 
-                  name={fields.fromName.name}
-                  key={fields.fromName.key}
-                  defaultValue={fields.fromName.initialValue}
+                  name={fields.name.name}
+                  key={fields.name.key}
+                  defaultValue={fields.name.initialValue}
                   placeholder='Your Name/Company Name' 
                 />
-                <p className="text-sm text-red-500">{fields.fromName.errors}</p>
+                <p className="text-sm text-red-500">{fields.name.errors}</p>
                 <Input  
-                  name={fields.fromEmail.name}
-                  key={fields.fromEmail.key}
-                  defaultValue={fields.fromEmail.initialValue}
+                  name={fields.email.name}
+                  key={fields.email.key}
+                  defaultValue={fields.email.initialValue}
                   placeholder='Your Email' 
                 />
-                 <p className="text-sm text-red-500">{fields.fromEmail.errors}</p>
+                 <p className="text-sm text-red-500">{fields.email.errors}</p>
               </div>
             </div>
             
@@ -134,7 +102,7 @@ const CreateEnquiryForm = ({userData}: any ) => {
                   <PopoverTrigger asChild>
                     <Button variant='outline' className='w-[280px]'>
                       <CalendarIcon/>
-                      { selectedDate ? ( new Intl.DateTimeFormat('en-US', {dateStyle: "long",}).format(selectedDate) ) : ( <span>Pick up Date </span> ) }
+                      { selectedDate ? ( new Intl.DateTimeFormat('en-US', {dateStyle: "long",}).format(selectedDate) ) : ( <span>Prefer Date </span> ) }
                     </Button>
                   </PopoverTrigger>
                 <PopoverContent>
@@ -142,11 +110,11 @@ const CreateEnquiryForm = ({userData}: any ) => {
                     selected={selectedDate}
                     mode='single'
                     fromDate={new Date()}
-                    onSelect={(date) => setSelectedDate(date || new Date())}
+                    onSelect={(preferDate) => setSelectedDate(preferDate || new Date())}
                   />
                 </PopoverContent>
               </Popover>
-              <p className="text-sm text-red-500">{fields.date.errors}</p>
+              <p className="text-sm text-red-500">{fields.preferDate.errors}</p>
             </div>    
           </div>
          

@@ -1,5 +1,5 @@
+import Inquiry from '@/components/home/Inquiry';
 import { z } from 'zod'
-
 
 export const onboardingSchema =  z.object({
   firstName: z.string().min(2, "Minimum is 2 characters"),
@@ -19,6 +19,21 @@ export const agentSchema = z.object({
   avatar: z.string().min(2, "Minimum is 2 characters"),
   status: z.enum(["ACTIVE", "INACTIVE"]).default("ACTIVE"),
 });
+
+export const inQuirySchema = z.object({
+  title: z.string().min(2, "Required, and not meet minimum character"),
+  // date:  z.string(),
+  name: z.string().min(1, "Required, and not meet minimum character"), // suplier
+  email: z.string().email("Invalid email address"),
+  inquiryId: z.string().min(1, "Required, and not meet minimum character").default(() => {
+    const randomString = Math.random().toString(36).substring(2, 8); // Generate random string
+    const randomNumber = Math.floor(1000 + Math.random() * 9000); // Generate random 4-digit number
+    return `${randomString}${randomNumber}`;
+  }),
+  preferDate: z.string().optional(),
+  note: z.string().optional(),
+});
+
 
 export const requestSchema = z.object({
   title: z.string().min(2, "Required, and not meet minimum character"),
