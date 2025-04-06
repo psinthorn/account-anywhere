@@ -155,7 +155,9 @@ model Request {
   fromAddress   String
   clientName    String // buyer
   clientEmail   String
+  mobile        String
   clientAddress String
+  roomNo        String
   note          String?
   status        ReqestStatus
 
@@ -350,6 +352,7 @@ model Voucher {
   child         Int
   pickUpPoint   String
   dropOffPoint  String
+  pickupTime    String
   fromEmail     String
   fromAddress   String
   clientName    String // buyer
