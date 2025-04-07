@@ -32,20 +32,26 @@ export const OnboardUser =  async (prevState: any ,formDara: FormData) => {
   return redirect("/dashboard")
 };
 
+
 // Create new agent
 export const CreateAgent = async (prevState: any, formData: FormData) => {
   // authenticae the user
   const session = requireAuth()
-
   // Parse the form data using the zod schema
   const submission = parseWithZod(formData, {
     schema: agentSchema
   });
+  // If the submission is not successful, return the error message
+  if (submission.status !== "success") {
+    return submission.reply();
+  }
+  // Create a new agent in the database
 };
 
+// Create Inquiry 
 export const CreateInquiry = async (prevState: any, formData: FormData) => {
   // authenticae the user
-  // const session = requireAuth()
+  const session = requireAuth()
   // Parse the form data using the zod schema
   const submission = parseWithZod(formData, {
     schema: inQuirySchema 
@@ -55,7 +61,6 @@ export const CreateInquiry = async (prevState: any, formData: FormData) => {
     return submission.reply();
   }
   // Create a new inquiry in the database  
- 
   const data = {
     data: {
       title: submission.value.title,
@@ -68,14 +73,9 @@ export const CreateInquiry = async (prevState: any, formData: FormData) => {
       // userId: (await session).user?.id,
     }
   };
-  console.log("data from submission: ", data)
-
   // Send email to the user 
-  console.log("Send email to the user")
   const { MailtrapClient } = require("mailtrap");
-
   const TOKEN = process.env.MAILTRAP_F2_API_TOKEN;
-  
   const client = new MailtrapClient({
     token: TOKEN,
   });
@@ -122,9 +122,9 @@ export const CreateInquiry = async (prevState: any, formData: FormData) => {
     })
     .then(console.log, console.error);
 
-  // send mail to admin 
-  console.log("Send email to admin")
-}
+  
+};
+
 
 // Create new invoice
 export const CreateRequest = async (prevState: any, formData: FormData) => {
@@ -142,6 +142,7 @@ export const CreateRequest = async (prevState: any, formData: FormData) => {
   }
 
   // Create a new request in the database
+  
 
   return;
 }

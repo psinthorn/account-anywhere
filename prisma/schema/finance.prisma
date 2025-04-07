@@ -1,0 +1,283 @@
+model PurchasingRequest {
+  id            String                 @id @default(uuid())
+  number        String
+  userId        String
+  clientId      String // buyer
+  vendorId      String // suplier
+  requestId     String // user can request by note or email 
+  total         Int
+  date          DateTime
+  validDate     DateTime
+  fromName      String // suplier
+  fromEmail     String
+  fromAddress   String
+  clientName    String // buyer
+  clientEmail   String
+  clientAddress String
+  note          String?
+  status        PurchasingReqestStatus
+
+  items Item[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PurchasingOrder {
+  id                  String                @id @default(uuid())
+  number              String
+  userId              String
+  clientId            String // buyer
+  purchasingRequestId String
+  vendorId            String // suplier
+  requestId           String
+  total               Int
+  date                DateTime
+  validDate           DateTime
+  fromName            String // suplier
+  fromEmail           String
+  fromAddress         String
+  clientName          String // buyer
+  clientEmail         String
+  clientAddress       String
+  note                String?
+  status              PurchasingOrderStatus
+
+  items Item[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Quotation {
+  id            String @id @default(uuid())
+  invoiceNumber String
+
+  userId            String
+  clientId          String // buyer
+  vendorId          String // suplier
+  purchasingOrderId String
+
+  total Int
+
+  date          DateTime
+  validDate     DateTime
+  fromName      String // suplier
+  fromEmail     String
+  fromAddress   String
+  clientName    String // buyer
+  clientEmail   String
+  clientAddress String
+  note          String?
+
+  status QuotationStatus
+
+  items Item[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Invoice Model Schema
+model Invoice {
+  id String @id @default(uuid())
+
+  title         String
+  invoiceNumber String   @default("INV-1112230001")
+  date          DateTime
+
+  fromName    String // suplier
+  fromEmail   String
+  fromAddress String
+
+  clientName    String // buyer
+  clientEmail   String
+  clientAddress String
+
+  clientId    String @default("1") // buyer and hidden input
+  vendorId    String @default("1") // suplier
+  quotationId String @default("1") // and hidden input
+  // dueDate     DateTime @default(now()) // and hidden input
+  dueDate     String @default("cash")
+
+  subTotal        Int     @default(0)
+  discountPercent Int     @default(0)
+  discountTotal   Int     @default(0)
+  vatPercent      Int     @default(7)
+  vatTotal        Int     @default(0)
+  note            String?
+
+  itemId          String @default("F2-111223")
+  itemModel       String @default("MOD-111223")
+  itemName        String @default("Account Anywhrer")
+  itemDescription String @default("Accpount made simple from anywhere service")
+  itemQuantity    Int    @default(0)
+  itemRate        Int    @default(0)
+  itemTotal       Int    @default(0)
+
+  total    Int    @default(0)
+  currency String @default("THB")
+
+  // items Item[]
+
+  reviseNumber Int      @default(1) //revise number
+  reviseDate   DateTime @default(now()) //revise date 
+  revise       String   @default("11121980-01") //revise date - revise number
+
+  status InvoiceStatus
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+  // Item   Item[]
+}
+
+model Receipt {
+  id            String        @id @default(uuid())
+  number        String
+  userId        String
+  clientId      String // buyer
+  vendorId      String // suplier
+  invoiceId     String
+  receiptNumber String
+  total         Int
+  date          DateTime
+  dueDate       DateTime
+  fromName      String // suplier
+  fromEmail     String
+  fromAddress   String
+  clientName    String // buyer
+  clientEmail   String
+  clientAddress String
+  note          String?
+  status        ReceiptStatus
+
+  itemId          String
+  itemModel       String
+  itemName        String
+  itemDescription String
+  itemQuatity     Int
+  itemRate        Int
+  itemTotal       Int
+
+  // items Item[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Item      Item[]
+}
+
+model Voucher {
+  id            String        @id @default(uuid())
+  number        String
+  clientId      String // buyer
+  vendorId      String // suplier
+  invoiceId     String
+  receiptNumber String
+  total         Int
+  date          DateTime
+  person        Int
+  adult         Int
+  child         Int
+  pickUpPoint   String
+  dropOffPoint  String
+  pickupTime    String
+  fromEmail     String
+  fromAddress   String
+  clientName    String // buyer
+  clientEmail   String
+  clientAddress String
+  note          String?
+  status        VoucherStatus
+
+  Items Item[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+}
+
+model TaxInvoiceReipt {
+  id              String           @id @default(uuid())
+  number          String
+  clientId        String // buyer
+  vendorId        String // suplier
+  invoiceId       String
+  receiptNumber   String
+  total           Int
+  date            DateTime
+  dueDate         DateTime
+  fromName        String // suplier
+  fromEmail       String
+  fromAddress     String
+  clientName      String // buyer
+  clientEmail     String
+  clientAddress   String
+  note            String?
+  status          TaxInvoiceStatus
+  itemName        String
+  itemDescription String
+  itemRate        Int
+  itemQuantity    Int
+
+  items Item[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+}
+
+enum PurchasingReqestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum PurchasingOrderStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum QuotationStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+enum InvoiceStatus {
+  PENDING
+  OVERDUE
+  PAID
+  CANCELLED
+  CANTCOLLECT
+}
+
+enum ReceiptStatus {
+  PENDING
+  PAID
+  SENT
+  CANCELLED
+}
+
+enum VoucherStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum TaxInvoiceStatus {
+  SENT
+  CANCELLED
+}

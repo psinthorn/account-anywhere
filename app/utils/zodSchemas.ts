@@ -16,6 +16,8 @@ export const agentSchema = z.object({
   city: z.string().min(2, "Minimum is 2 characters"),
   country: z.string().min(2, "Minimum is 2 characters"),
   postalCode: z.string().min(2, "Minimum is 2 characters"),
+  organization: z.string().min(2, "Minimum is 2 characters"),
+  position: z.string().min(2, "Minimum is 2 characters"),
   avatar: z.string().min(2, "Minimum is 2 characters"),
   status: z.enum(["ACTIVE", "INACTIVE"]).default("ACTIVE"),
 });
