@@ -1,0 +1,71 @@
+model Organization {
+  id        String @id @default(uuid())
+  shortName String
+  nameTH    String
+  nameEN    String
+  taxId     String
+
+  email     String
+  phone     String
+  address   Address @relation(fields: [addressId], references: [id])
+  addressId String
+  mobile    String
+
+  logo    String? // logo image
+  website String?
+
+  note String?
+
+  type         String // company, individual, Agent, supplier, 
+  royaltyLevel String // agent level, hotel level, supplier level, ota level
+  status       String @default("active")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+}
+
+model Address {
+  id           String         @id @default(uuid())
+  street       String
+  subDistrict  String
+  district     String
+  province     String
+  postalCode   String
+  country      String         @default("Thailand")
+  latitude     Float?
+  longitude    Float?
+  placeId      String? // Google Place ID
+  Organization Organization[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model Social {
+  id        String   @id @default(uuid())
+  name      String
+  url       String
+  icon      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Agent Model Schema
+model Agent {
+  id           String  @id @default(uuid())
+  nameTH       String
+  nameEN       String
+  taxId        String
+  email        String
+  phone        String
+  mobile       String
+  royaltyLevel String
+  socials      String
+  address      String
+  note         String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
