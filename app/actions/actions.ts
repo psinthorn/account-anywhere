@@ -1,11 +1,12 @@
 "use server"
 
 import { notFound, redirect } from "next/navigation"
-import prisma from "./utils/db"
-import { requireAuth } from "./utils/hooks"
-import { invoiceSchema, onboardingSchema, requestSchema, agentSchema, inQuirySchema } from "./utils/zodSchemas"
+import prisma from "../utils/db"
+import { requireAuth } from "../utils/hooks"
+import { invoiceSchema, onboardingSchema, requestSchema, agentSchema, inQuirySchema } from "../utils/zodSchemas"
 import { parseWithZod } from "@conform-to/zod"
-import { mailClient } from "./utils/mailtrap"
+import { mailClient } from "../utils/mailtrap"
+import { revalidatePath } from "next/cache"
 
 export const OnboardUser =  async (prevState: any ,formDara: FormData) => {
   const session = requireAuth()
@@ -143,6 +144,24 @@ export const CreateRequest = async (prevState: any, formData: FormData) => {
 
   // Create a new request in the database
   
+  const data = await prisma.booking.create({
+    data: {
+      date: submission.value.date,
+      bookingNo: submission.value.bookingNo,
+      fromName: submission.value.fromName,
+      fromEmail: submission.value.fromEmail,
+      fromAddress: submission.value.fromAddress,
+      clientName: submission.value.clientName,
+      clientEmail: submission.value.clientEmail,
+      clientAddress: submission.value.clientAddress,
+      itemId: submission.value.itemId,
+      adutlt: submission.value.adult,
+      child: submission.value.child,
+      infant: submission.value.infant,
+      note: submission.value.note,
+      // userId: (await session).user?.id,
+    }
+  });
 
   return;
 }
@@ -226,7 +245,8 @@ export const CreateInvoice = async  (prevState: any ,formData: FormData) => {
     }
   }).then(console.log, console.error);
 
-  return redirect("/dashboard/invoices")
+  revalidatePath("/dashboard/invoices")
+  // return redirect("/dashboard/invoices")
 
 }; 
 

@@ -35,13 +35,39 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-# Prisma
 
-after init prisma and prepare model on shema below is the command for create and sync database with Neon.tech
-
+# Prisma installation
+## Install Prisma and the Prisma Client
+```bash
+  pnpm add -D prisma
+  pnpm add @prisma/client
 ```
-# Create or migrate table
+
+# Prisma init
+# To initialize Prisma in your project, you can use the following command:
+```bash
+  # Initialize Prisma in your project
+  # This will create a new Prisma folder with a schema.prisma file
+  # and a .env file in the root of your project
+  # The .env file is where you will store your database connection string
+  # The schema.prisma file is where you will define your data model
+  # and database connection
+
+pnpx prisma init
+
+  #after init prisma and prepare model on shema below is the command for create and sync database with Neon.tech
+
+# Create or migrate table this also create the database if it doesn't exist and generate the prisma client top. 
 pnpm dlx prisma db push
+
+#When you edit prisma schema you need to create a migration to sync with database and update the Prisma client, you can use the following commands in your terminal:
+#Create a new migration:
+pnpm dlx  prisma migrate dev --name <migration_name>
+#Replace <migration_name> with a descriptive name for your migration.
+# This will create a new migration file in the prisma/migrations folder and apply the migration to the database.
+
+# Generate the Prisma Client
+pnpm dlx prisma generate
 
 # Prisma studio or GUI
 pnpm dlx prisma studio
@@ -49,50 +75,69 @@ pnpm dlx prisma studio
 ```
 
 ### Update command
-
-```
-  # Install Prisma and the Prisma Client
-  pnpm add -D prisma
-  pnpm add @prisma/client
-
-  # Initialize Prisma
-  pnpx prisma init
+```bash
+  # Install Prisma CLI
+  # Initialize Prisma in your project
+  # This will create a new Prisma folder with a schema.prisma file
+  # and a .env file in the root of your project
+  # The .env file is where you will store your database connection string
+  # The schema.prisma file is where you will define your data model
+  # and database connection
+  # You can also use the --datasource flag to specify a different datasource
+  # For example, if you want to use a SQLite database, you can run:
+  # pnpx prisma init --datasource-provider sqlite
+  # This will create a new SQLite database file in the root of your project
+  # and update the schema.prisma file to use SQLite as the datasource
+  # If you want to use a different database, you can specify the connection string
+  # in the .env file and Prisma will automatically detect the database type
+  # For example, if you want to use a PostgreSQL database, you can run:
+  # pnpx prisma init --datasource-provider postgresql
+  # This will create a new PostgreSQL database and update the schema.prisma file
+  # to use PostgreSQL as the datasource
+  # You can also use the --create-db flag to create the database if it doesn't exist
+  # For example, if you want to create a new PostgreSQL database, you can run:
+  # pnpx prisma init --datasource-provider postgresql --create-db
+  # This will create a new PostgreSQL database and update the schema.prisma file
+  # to use PostgreSQL as the datasource
+  # You can also use the --force flag to overwrite the existing schema.prisma file
+  # For example, if you want to overwrite the existing schema.prisma file, you can run:
+  # pnpx prisma init --force
+  # This will overwrite the existing schema.prisma file and create a new .env file
+  # in the root of your project
+  # You can also use the --skip-generate flag to skip generating the Prisma Client
+  # For example, if you want to skip generating the Prisma Client, you can run:
+  # pnpx prisma init --skip-generate
+  # This will create a new Prisma folder with a schema.prisma file
+  # and a .env file in the root of your project
+  # and skip generating the Prisma Client
+  # You can also use the --skip-seed flag to skip seeding the database
+  # For example, if you want to skip seeding the database, you can run:
+  # pnpx prisma init --skip-seed
+  # This will create a new Prisma folder with a schema.prisma file
+  # and a .env file in the root of your project
+  # and skip seeding the database
+  # You can also use the --skip-migrate flag to skip migrating the database
+  # For example, if you want to skip migrating the database, you can run:
+  # pnpx prisma init --skip-migrate
+  # This will create a new Prisma folder with a schema.prisma file
+  # and a .env file in the root of your project
 
   # Create and apply migrations
-  pnpx prisma migrate dev --name init
-
-  # Generate the Prisma Client
-  pnpx prisma generate
-
-  # Open Prisma Studio to inspect the database
-  pnpx prisma studio
+  # This will create a new migration file in the prisma/migrations folder
+  # and apply the migration to the database
+  # The migration file will contain the SQL commands to create the tables
+  # and columns defined in the schema.prisma file
+  # The migration file will also contain the SQL commands to create the indexes
 ```
-
-To create a migration and update the Prisma client, you can use the following commands in your terminal:
-
-Create a new migration:
-pnpx prisma migrate dev --name <migration_name>
-
-Replace <migration_name> with a descriptive name for your migration.
-
-Update the Prisma client:
-
-These commands will create a new migration based on your Prisma schema changes and update the Prisma client to reflect the latest schema.
 
 ## How to install Mailtrap
-
-```
+```bash
   # Install Mailtrap
   pnpm install mailtrap
-
 ```
 
 ## Generate PDF with jsPDF
-
-instal jsPDF
-
-```
+```bash
   # Install jsPDF
   pnpm install jspdf
-
 ```

@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import React, { useActionState, useEffect, useState } from 'react'
-import { OnboardUser } from '../actions'
+import { OnboardUser } from '../actions/actions'
 import { useForm } from '@conform-to/react'
 import { parseWithZod } from '@conform-to/zod'
 import { onboardingSchema } from '../utils/zodSchemas'

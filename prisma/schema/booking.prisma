@@ -1,0 +1,92 @@
+model Inquiry {
+  id              String        @id @default(uuid())
+  userId          String
+  clientId        String // buyer
+  vendorId        String // suplier
+  agentId         String
+  inquiryNumber   String // inquiry number
+  originalInquiry String? // origin inquiry like from where or from who
+  // total          Int
+  //date            DateTime
+  // validDate      DateTime
+  fromName        String // suplier
+  fromEmail       String
+  note            String?
+  preferDate      DateTime      @default(now())
+  preferTime      String        @default("09:00")
+  preferLocation  String
+  status          InquiryStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum InquiryStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+model Booking {
+  id        String @id @default(uuid())
+  bookingNo String
+  clientId  String // buyer
+  vendorId  String // suplier
+  agentId   String
+  type      String // booking type like car, hotel, tour, etc
+
+  preferDate DateTime // prefer date of travel
+  preferTime String // prefer time of travel
+  validDate  DateTime
+  total      Int
+
+  fromName      String // suplier
+  fromEmail     String // agent email
+  fromPhone     String // agent phone
+  fromAddress   String // agent address
+  fromLocation  String // agent location
+  fromLatitude  Float?
+  fromLongitude Float?
+  fromPlaceId   String? // Google Place ID
+  fromNote      String?
+
+  clientName       String // customer name
+  clientEmail      String // customer email
+  mobile           String
+  clientAddress    String
+  pickupLocation   String // pickup location hotel, villa, resort, etc
+  pickupDate       DateTime
+  pickupTime       String
+  dropoffLocation  String
+  dropoffDate      DateTime
+  dropoffTime      String
+  pickupNote       String?
+  dropoffNote      String?
+  pickupLatitude   Float?
+  pickupLongitude  Float?
+  dropoffLatitude  Float?
+  dropoffLongitude Float?
+  pickupPlaceId    String? // Google Place ID
+  dropoffPlaceId   String? // Google Place ID
+  adult            Int
+  child            Int
+  infant           Int
+  roomNo           String
+  note             String?
+  status           BookingStatus
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  items Item[]
+  User  User[]
+}
+
+enum BookingStatus {
+  PENDING
+  APPROVED
+  CONFIRMED
+  REJECTED
+  CANCELLED
+}

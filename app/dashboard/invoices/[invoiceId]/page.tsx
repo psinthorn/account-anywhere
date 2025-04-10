@@ -1,4 +1,4 @@
-import { GetInvoiceByID } from '@/app/actions'
+import { GetInvoiceByID } from '@/app/actions/actions'
 import { requireAuth } from '@/app/utils/hooks'
 import UpdateInvoiceForm from '@/components/invoices/UpdateInvoiceForm'
 import { Prisma } from '@prisma/client'

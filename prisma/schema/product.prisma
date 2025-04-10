@@ -30,6 +30,8 @@ model Item {
   taxInvoiceReiptId   String?
   // Invoice             Invoice?           @relation(fields: [invoiceId], references: [id])
   // invoiceId           String?
-  Request             Request?           @relation(fields: [requestId], references: [id])
-  requestId           String?
+  // Request             Request?           @relation(fields: [requestId], references: [id])
+  // requestId           String?
+  Booking             Booking?           @relation(fields: [bookingId], references: [id])
+  bookingId           String?
 }
